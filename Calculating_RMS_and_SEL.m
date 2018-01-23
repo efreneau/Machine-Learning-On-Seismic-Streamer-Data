@@ -17,41 +17,45 @@ peak = [];
 for r=1:size(fData,1)
     row = fData(r,:);
     [val,peak1] = max(row);
-    disp(peak1)
-    if peak1>1000
+    %disp(peak1)
+    if peak1>2*fs && length(row)-peak1>2*fs
         DATA = row(peak1-2*fs:peak1+2*fs);
+    elseif length(row)-peak1<2*fs
+        DATA = row(peak1:end);
+        DATA = [DATA,zeros(1,4*fs+1-length(DATA))];
     else
         w = row(peak1:peak1+2*fs);
         DATA = cat(1,zeros(1,len(w)),w);
     end
-    winData = cat(2,winData,DATA);
-    peak = cat(1,peak,peak1);
+    winData = [winData;DATA];
+    peak = [peak,peak1];
 end
 plot(peak)
 
-squaredPressure = winData.^2;
+squaredPressure = winData.*winData;
 RMS = [];
 T90 = [];
 
 for r=1:size(squaredPressure,1)%RMS
     row = squaredPressure(r,:);
-    t90a=t90(row);
-    RMS = cat(1,RMS,10*log10(sum(row)/(fs*T90a)));
-    T90 = cat(1,T90,T90a);
+    T90a=t90(row);
+    RMS = [RMS,10*log10(sum(row)/(fs*T90a))];
+    T90 = [T90,T90a];
 end
 
 SEL = [];
 
-for r=1:size(RMS,1)%SEL
-    row = RMS(r,:);
-    SEL = cat(1,SEL,row(r)+10*log10(T90(r)));
+for r=1:size(RMS,2)%SEL
+    sel = RMS(r)+10*log10(T90(r))
+    SEL = [SEL,sel];
 end 
 
 
 function tnin=t90(x);
-    tnin = -9999
+    fs = 500;
+    tnin = -9999;
     total = sum(x);
-    peak = int(len(x)/2);
+    peak = floor(length(x)/2);
     for i=(1:100000)
         if sum(x(peak-i:peak+i))>=0.9*total
             tnin = 2*i/fs;
