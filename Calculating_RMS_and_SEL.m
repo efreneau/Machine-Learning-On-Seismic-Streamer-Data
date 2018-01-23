@@ -24,7 +24,6 @@ for r=1:size(fData,1)
         DATA = [DATA,zeros(1,4*fs+1-length(DATA))];
     else
         w = row(peak1:peak1+2*fs);
-        %DATA = cat(1,zeros(1,len(w)),w);
         DATA = [zeros(1,4*fs+1-length(w)),w]
     end
     winData = [winData;DATA];
@@ -51,6 +50,10 @@ for r=1:size(RMS,2)%SEL
 end 
 
 plot(RMS)
+win = 5;
+b = 1/win*ones(win,1);
+RMS_avg = filter(b,1,SEL);
+%plot(RMS_avg)
 
 function tnin=t90(x);
     fs = 500;
