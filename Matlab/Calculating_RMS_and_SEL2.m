@@ -1,6 +1,4 @@
 clear all; close all; clc;
-todB = @(x) 10*log10(abs(x));
-amp = @(x) 10^(x/10);
 fs = 500;
 
 load('MGL1212_Line_AT.mat','-mat')
@@ -14,7 +12,7 @@ f1 = flipud(Data1')*1e6;
 sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
 
 fData = sosfilt(sos,f1,2);
-fData = amp(6)*fData;
+fData = db2mag(6)*fData;
 
 winData = [];
 peak = [];
@@ -31,6 +29,11 @@ for r=1:size(fData,1)
         %DATA = row(1:peak1+2*fs);
         %T90 = [T90,t90r(DATA)];
         %DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
+        %
+        DATA = row(peak1:peak1+2*fs);
+        T90 = [T90,t90r(DATA)];
+        DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
+
     elseif peak1 > 2*fs && length(row) - peak1>=1000%Region 2: Peak has space on either side
         DATA = row(peak1-2*fs:peak1+2*fs);
         T90 = [T90,t90(DATA)];
@@ -51,7 +54,7 @@ squaredPressure = winData.*winData;
 
 for r=1:size(squaredPressure,1)%RMS
     row = squaredPressure(r,:);
-    T90a = T90(r);
+    T90a = 0.1;%T90(r);
     RMS = [RMS,10*log10(sum(row)/(fs*T90a))];
 end
 
@@ -74,9 +77,9 @@ function tnin=t90(x);%t90 calculation for normal window
     fs = 500;
     tnin = -9999;
     total = sum(x);
-    peak2 = ceil(length(x)/2);
+    peak = ceil(length(x)/2);
     for i=(1:100000)
-        if sum(x(peak2-i:peak2+i))>=0.9*total
+        if sum(x(peak-i:peak+i))>=0.9*total
             tnin = 2*i/fs;
             return;
         end
