@@ -6,7 +6,7 @@ load('MGL1212_Line_AT.mat','-mat')
 %Load Files
 %nav = readP190('MGL1212NTMCS01.mat');%load navigation file
 %readMCS('MGL1212NTMCS01.mat','R000179_1342879566.raw','Results.mat');
-
+readMCS('R000179_1342879566.RAW','MGL1212NTMCS01.mat','Results.mat');
 %
 f1 = flipud(Data1')*1e6;
 sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
