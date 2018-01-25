@@ -4,7 +4,7 @@ amp = @(x) 10^(x/10);
 fs = 500;
 
 load('MGL1212_Line_AT.mat','-mat')
-f1 = flipud(Data1')*1e7;
+f1 = flipud(Data1')*1e4;
 sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
 
 fData = sosfilt(sos,f1,2);%2
@@ -16,6 +16,7 @@ T90 = [];
 RMS = [];
 SEL = [];
 
+%Find peaks, window around peaks and calculate T90.
 for r=1:size(fData,1)
     row = fData(r,:);
     [val,peak1] = max(row);
@@ -52,6 +53,8 @@ for r=1:size(RMS,2)%SEL
 end 
 
 plot(RMS)
+%Write to CSV (https://www.mathworks.com/help/matlab/ref/csvread.html)
+%https://www.mathworks.com/help/matlab/ref/csvwrite.html
 
 function tnin=t90(x);%t90 calculation for normal window
     fs = 500;
