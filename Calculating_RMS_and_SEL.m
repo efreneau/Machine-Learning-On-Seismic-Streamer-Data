@@ -12,37 +12,39 @@ fData = amp(6)*fData;
 
 winData = [];
 peak = [];
+T90 = [];
 
 for r=1:size(fData,1)
     row = fData(r,:);
     [val,peak1] = max(row);
-    %ceil(2001/2)
     if peak1 <= 2*fs%Region 1: Peak is too close to the first index
         DATA = row(1:peak1+2*fs);
-        %DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
+        T90 = [T90,t90r(DATA)];
+        DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
         disp('a')
     elseif peak1 > 2*fs && length(row) - peak1>=1000%Region 2: Peak has space on either side
         DATA = row(peak1-2*fs:peak1+2*fs);
+        T90 = [T90,t90(row)];
         disp('b')
     else %Region 3: Peak is too close to the end
         DATA = row(peak1:end);
+        T90 = [T90,t90l(DATA)];
         DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
-        disp(peak1)
     end
     winData = [winData;DATA];
     peak = [peak,peak1];
 end
+
 plot(peak)
 
 squaredPressure = winData.*winData;
 RMS = [];
-T90 = [];
+
 
 for r=1:size(squaredPressure,1)%RMS
     row = squaredPressure(r,:);
-    T90a=t90(row);
+    T90a = T90(r);
     RMS = [RMS,10*log10(sum(row)/(fs*T90a))];
-    T90 = [T90,T90a];
 end
 
 SEL = [];
@@ -52,13 +54,13 @@ for r=1:size(RMS,2)%SEL
     SEL = [SEL,sel];
 end 
 
-%plot(RMS)
+plot(RMS)
 
-function tnin=t90n(x);%t90 calculation for normal window
+function tnin=t90(x);%t90 calculation for normal window
     fs = 500;
     tnin = -9999;
     total = sum(x);
-    peak = floor(length(x)/2);
+    peak = ceil(length(x)/2);
     for i=(1:100000)
         if sum(x(peak-i:peak+i))>=0.9*total
             tnin = 2*i/fs;
@@ -67,14 +69,25 @@ function tnin=t90n(x);%t90 calculation for normal window
     end
 end
 
-function tnin=t90r(x);%t90 calculation for right sided window
+function tnin=t90r(x);%t90 calculation for right-sided window
     fs = 500;
     tnin = -9999;
     total = sum(x);
-    peak = floor(length(x)/2);
     for i=(1:100000)
-        if sum(x(peak-i:peak+i))>=0.9*total
-            tnin = 2*i/fs;
+        if sum(x(1:i))>=0.9*total
+            tnin = i/fs;
+            return;
+        end
+    end
+end
+
+function tnin=t90l(x);%t90 calculation for left-sided window
+    fs = 500;
+    tnin = -9999;
+    total = sum(x);
+    for i=(1:100000)
+        if sum(x(end-i:end))>=0.9*total
+            tnin = i/fs;
             return;
         end
     end
