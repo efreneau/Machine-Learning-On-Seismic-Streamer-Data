@@ -4,7 +4,7 @@ fs = 500;
 dataFile = 'R000179_1342879566.RAW';
 P190 = 'MGL1212NTMCS01.mat';
 
-readMCS(dataFile,P190,'Results.mat');
+readMCS(strcat('Data/Line AT/',dataFile),strcat('P190/',P190),'Results.mat');
 load('Results.mat')
 
 %f1 = flipud(Data1')*1e6;
@@ -63,14 +63,14 @@ for r=1:size(RMS,2)%SEL
 end 
 
 %plot(peak)
-%plot(T90)
+plot(T90)
 %plot(RMS)
 
 
-csv_file = strcat('Data/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
+csv_file = strcat('CSV/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
 
-if ~exist('Data', 'dir')%create directory if not present
-    mkdir('Data');
+if ~exist('CSV', 'dir')%create directory if not present
+    mkdir('CSV');
 end
 
 if exist(csv_file, 'file')%remove csv if present
