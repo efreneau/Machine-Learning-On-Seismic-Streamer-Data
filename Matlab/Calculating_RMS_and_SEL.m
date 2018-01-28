@@ -14,7 +14,7 @@ sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.7
 fData = sosfilt(sos,f1,2);
 fData = db2mag(6)*fData;
 
-winData = [];
+squaredPressure = [];%squared pressure signal windowed around peaks
 peak = [];
 T90 = [];
 RMS = [];
@@ -26,34 +26,25 @@ for r=1:size(fData,1)
     row = fData(r,:);
     [val,peak1] = max(row);
     if peak1 <= 2*fs%Region 1: Peak is too close to the first index
-        %DATA = row(1:peak1+2*fs);
-        %T90 = [T90,t90r(DATA)];
-        %DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
-        %
-        DATA = row(peak1:peak1+2*fs);
+        DATA = row(peak1:peak1+2*fs).^2;
         T90 = [T90,t90r(DATA)];
         DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
 
     elseif peak1 > 2*fs && length(row) - peak1>=1000%Region 2: Peak has space on either side
-        DATA = row(peak1-2*fs:peak1+2*fs);
+        DATA = row(peak1-2*fs:peak1+2*fs).^2;
         T90 = [T90,t90(DATA)];
     else %Region 3: Peak is too close to the end
-        DATA = row(peak1:end);
+        DATA = row(peak1:end).^2;
         T90 = [T90,t90l(DATA)];
         DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
     end
-    winData = [winData;DATA];
+    squaredPressure = [squaredPressure;DATA];
     peak = [peak,peak1];
 end
 
-
-
-
-squaredPressure = winData.*winData;
-
 for r=1:size(squaredPressure,1)%RMS
     row = squaredPressure(r,:);
-    T90a = 0.1;%T90(r);
+    T90a = T90(r);%0.1
     RMS = [RMS,10*log10(sum(row)/(fs*T90a))];
 end
 
@@ -63,8 +54,8 @@ for r=1:size(RMS,2)%SEL
 end 
 
 %plot(peak)
-plot(T90)
-%plot(RMS)
+%plot(T90)
+plot(RMS)
 
 
 csv_file = strcat('CSV/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
@@ -91,7 +82,7 @@ function tnin=t90(x);%t90 calculation for normal window
     peak = ceil(length(x)/2);
     for i=(1:100000)
         if sum(x(peak-i:peak+i))>=0.9*total
-            tnin = 2*i/fs;
+            tnin = i/fs;
             return;
         end
     end
