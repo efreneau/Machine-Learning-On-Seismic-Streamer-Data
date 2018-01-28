@@ -1,15 +1,14 @@
 clear all; close all; clc;
 fs = 500;
 
-%load('MGL1212_Line_AT.mat','-mat')
+dataFile = 'R000179_1342879566.RAW';
+P190 = 'MGL1212NTMCS01.mat';
 
-%Load Files
-%nav = readP190('MGL1212NTMCS01.mat');%load navigation file
-%readMCS('MGL1212NTMCS01.mat','R000179_1342879566.raw','Results.mat');
-readMCS('R000179_1342879566.RAW','MGL1212NTMCS01.mat','Results.mat');
+readMCS(dataFile,P190,'Results.mat');
 load('Results.mat')
-%
-f1 = flipud(Data1')*1e6;
+
+%f1 = flipud(Data1')*1e6;
+f1 = Data1'*1e6;%unflipped
 sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
 
 fData = sosfilt(sos,f1,2);
@@ -69,10 +68,25 @@ plot(RMS)
 
 %Write to CSV (https://www.mathworks.com/help/matlab/ref/csvread.html)
 %https://www.mathworks.com/help/matlab/ref/csvwrite.html
+csv_file = strcat('Data/',P190(1:end-4),'.csv');
+%[Depth,date,time,x_gun,y_gun,z_gun,x_r,y_r,z_r,sel,rms]
+%M = strcat(Depth,JulianDay,Time,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS);
 
-%dlmwrite('Data.csv',[depth,date,time,x_gun,y_gun,z_gun,x_r,y_r,z_r,sel,rms],'delimiter',',');
+if ~exist('Data', 'dir')
+    mkdir('Data');
+end
 
+if exist(csv_file, 'file')
+    delete(csv_file)
+end
+fileID = fopen(csv_file,'w');
+fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');
+for i = 1:r
+    s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(r)),',',string(Y_R1(r)),',',string(Z_R1(r)),',',string(SEL(r)),',',string(RMS(r)),'\n');
+    fprintf(fileID,s);
+end
 
+fclose(fileID);
 
 function tnin=t90(x);%t90 calculation for normal window
     fs = 500;
