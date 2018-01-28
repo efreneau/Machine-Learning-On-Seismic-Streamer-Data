@@ -46,8 +46,7 @@ for r=1:size(fData,1)
     peak = [peak,peak1];
 end
 
-%plot(peak)
-plot(T90)
+
 
 
 squaredPressure = winData.*winData;
@@ -63,29 +62,26 @@ for r=1:size(RMS,2)%SEL
     SEL = [SEL,sel];
 end 
 
+%plot(peak)
+%plot(T90)
+%plot(RMS)
 
-plot(RMS)
 
-%Write to CSV (https://www.mathworks.com/help/matlab/ref/csvread.html)
-%https://www.mathworks.com/help/matlab/ref/csvwrite.html
-csv_file = strcat('Data/',P190(1:end-4),'.csv');
-%[Depth,date,time,x_gun,y_gun,z_gun,x_r,y_r,z_r,sel,rms]
-%M = strcat(Depth,JulianDay,Time,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS);
+csv_file = strcat('Data/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
 
-if ~exist('Data', 'dir')
+if ~exist('Data', 'dir')%create directory if not present
     mkdir('Data');
 end
 
-if exist(csv_file, 'file')
+if exist(csv_file, 'file')%remove csv if present
     delete(csv_file)
 end
 fileID = fopen(csv_file,'w');
-fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');
-for i = 1:r
-    s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(r)),',',string(Y_R1(r)),',',string(Z_R1(r)),',',string(SEL(r)),',',string(RMS(r)),'\n');
+fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
+for i = 1:r%append rows
+    s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
     fprintf(fileID,s);
 end
-
 fclose(fileID);
 
 function tnin=t90(x);%t90 calculation for normal window
