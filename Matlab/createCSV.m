@@ -1,5 +1,7 @@
 function c = createCSV(dataFile,P190)
     fs = 500;
+    dataFileloc = strsplit(dataFile,'\')
+    P190loc = strsplit(P190,'\')
     readMCS(dataFile,P190,'Results.mat');
     load('Results.mat')
     f1 = Data1'*1e6;%unflipped
@@ -47,7 +49,7 @@ function c = createCSV(dataFile,P190)
         SEL = [SEL,sel];
     end 
 
-    csv_file = strcat('CSV/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
+    %%%%%csv_file = strcat('CSV/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
 
     if ~exist('CSV', 'dir')%create directory if not present
         mkdir('CSV');
