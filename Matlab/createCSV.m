@@ -1,25 +1,19 @@
 function c = createCSV(dataFile,P190)
-    %clear all; close all; clc;
     fs = 500;
-
-    %dataFile = 'R000179_1342879566.RAW';
-    %P190 = 'MGL1212NTMCS01.mat';
-
-    %readMCS(strcat('Data/Line AT/',dataFile),strcat('P190/',P190),'Results.mat');
+    readMCS(dataFile,P190,'Results.mat');
     load('Results.mat')
-
-    %f1 = flipud(Data1')*1e6;
     f1 = Data1'*1e6;%unflipped
+    
     sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
-
     fData = sosfilt(sos,f1,2);%filter
-    fData = db2mag(6)*fData; %group length effect
+    
+    fData = db2mag(6)*fData; %Group length effect +6dB
 
-    squaredPressure = [];%squared pressure signal windowed around peaks
-    peak = [];
-    T90 = [];
-    RMS = [];
-    SEL = [];
+    squaredPressure = [];%Squared pressure signal windowed around peaks
+    peak = [];%Index of peaks
+    T90 = [];%Window size of 90% power
+    RMS = [];%RMS Power
+    SEL = [];%SEL Power
 
 
     %Find peaks, window around peaks and calculate T90.
@@ -64,7 +58,7 @@ function c = createCSV(dataFile,P190)
     end
     fileID = fopen(csv_file,'w');
     fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
-    for i = 1:r %append rows
+    for i = 1:r %Append rows
         s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
