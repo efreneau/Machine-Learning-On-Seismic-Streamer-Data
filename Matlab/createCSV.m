@@ -75,6 +75,7 @@ function c = createCSV(dataFile,P190)
     end
     fileID = fopen(csv_file,'w');
     fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
+    %fprintf(fileID,'Time_UTC,Ocean_Depth_at_Airgun_meter,Ocean_Depth_at_Receivern_meter,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS');
     for i = 1:r %Append rows
         s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
