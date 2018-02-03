@@ -1,9 +1,21 @@
 function c = createCSV(dataFile,P190)
+%createCSV(dataFile,P190)
+%
+%createCSV computes the RMS and SEL power for the siesmic streamer data and
+%outputs those and the navigation data found in the P190 to a CSV file. 
+%createCSV depends on readMCS, readP190 and readP190 being in the same
+%directory as this function to work.
+%
+%The csv file is created in a directory on the same level as the Data
+%directory. The name of the file will be 'Line Name_Folder Name_file name.csv'
+%
+%example usage: createCSV('Matlab\Data\Line AT\R000179_1342879566.RAW','P190\MGL1212NTMCS01.mat')
+%For more information see github.com/efreneau/machinelearninguw
     fs = 500;
-    dataFileloc = strsplit(dataFile,'\')
-    P190loc = strsplit(P190,'\')
+    dataFileloc = strsplit(dataFile,'\');
+    P190loc = strsplit(P190,'\');
     readMCS(dataFile,P190,'Results.mat');
-    load('Results.mat')
+    load('Results.mat');
     f1 = Data1'*1e6;%unflipped
     
     sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
@@ -49,12 +61,15 @@ function c = createCSV(dataFile,P190)
         SEL = [SEL,sel];
     end 
 
-    %%%%%csv_file = strcat('CSV/',P190(1:end-4),'.csv');%create file name and directory for a specific recording
-
-    if ~exist('CSV', 'dir')%create directory if not present
-        mkdir('CSV');
+    csv_dir = strcat(strjoin(P190loc(1:end-3),'\'),'\CSV\');
+    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));
+    csv_file = strcat(csv_file(1:end-3),'csv');
+    
+    
+    if ~exist(csv_dir, 'dir')%create directory if not present
+        mkdir(csv_dir);
     end
-
+    
     if exist(csv_file, 'file')%remove csv if present
         delete(csv_file)
     end
@@ -65,6 +80,7 @@ function c = createCSV(dataFile,P190)
         fprintf(fileID,s);
     end
     fclose(fileID);
+    disp(csv_file)
 end
 
     function tnin=t90(x);%t90 calculation for normal window
