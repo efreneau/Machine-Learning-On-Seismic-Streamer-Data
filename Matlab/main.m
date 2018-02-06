@@ -9,4 +9,4 @@ clear all; close all; clc;
 %Line 06\Tape 73\R001467_1342715934.RAW error
 %Line 06\Tape 74\R001682_1342721117.RAW error
 %%readMCS('Data\Line 06\Tape 73\R001462_1342715827.RAW','P190\MGL1212NTMCS01.mat','results.mat');
-createCSV('/home/zomege/Desktop/machinelearninguw-master/Matlab/Data/Line AT/R000179_1342879566.RAW','/home/zomege/Desktop/machinelearninguw-master/Matlab/P190/MGL1212NTMCS01.mat','/home/zomege/Desktop/machinelearninguw-master/Matlab');
+createCSV('/home/zomege/Desktop/machinelearninguw-master/Matlab/Data/Line AT/R000179_1342879566.RAW','/home/zomege/Desktop/machinelearninguw-master/Matlab/P190/MGL1212NTMCS01.mat','/home/zomege/Desktop/machinelearninguw-master/Matlab/')

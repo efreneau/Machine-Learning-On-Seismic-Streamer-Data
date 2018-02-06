@@ -7,8 +7,7 @@ function c = createCSV(dataFile,P190,csv_dir)
 %directory as this function to work.
 %
 %datafile is the raw streamer data. P190 is the navigation file. csv_dir is
-%the desired location for the output csv files. Leave off the slash from
-%the end of csv_dir as it will cause an error.
+%the desired location for the output csv files.
 %
 %Example Usage:
 %createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
@@ -68,8 +67,8 @@ function c = createCSV(dataFile,P190,csv_dir)
         SEL = [SEL,sel];
     end 
 
-    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));
-    csv_file = strcat(csv_dir,delim,strjoin(dataFileloc(end-2:end),'_'));
+    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
+    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
     
     
@@ -81,10 +80,10 @@ function c = createCSV(dataFile,P190,csv_dir)
         delete(csv_file)
     end
     fileID = fopen(csv_file,'w');
-    fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
+    fprintf(fileID,'Time,Depth at Airgun(m),Date,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
     %fprintf(fileID,'Time_UTC,Ocean_Depth_at_Airgun_meter,Ocean_Depth_at_Receivern_meter,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS');
     for i = 1:r %Append rows
-        s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+        s = strcat(string(Time),',',string(Depth),',',string(JulianDay),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
