@@ -1,22 +1,26 @@
-function c = createCSV(dataFile,P190,delim)
-%createCSV(dataFile,P190,delim)
+function c = createCSV(dataFile,P190,csv_dir)
+%createCSV(dataFile,P190)
 %
 %createCSV computes the RMS and SEL power for the siesmic streamer data and
 %outputs those and the navigation data found in the P190 to a CSV file. 
 %createCSV depends on readMCS, readP190 and readP190 being in the same
 %directory as this function to work.
 %
-%delim is the delimiator for the operating system you are running this on.
-%Unix based systems use '/' while windows uses '/'.
+%datafile is the raw streamer data. P190 is the navigation file. csv_dir is
+%the desired location for the output csv files. Leave off the slash from
+%the end of csv_dir as it will cause an error.
 %
-%The csv file is created in a directory on the same level as the Data
-%directory. The name of the file will be 'Line Name_Folder Name_file name.csv'
+%Example Usage:
+%createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
 %
-%example usage: createCSV('Matlab\Data\Line AT\R000179_1342879566.RAW','P190\MGL1212NTMCS01.mat')
 %For more information see github.com/efreneau/machinelearninguw
+    if ispc %Choose path deliminator
+        delim = '\';
+    else
+        delim = '/';
+    end
     fs = 500;
     dataFileloc = strsplit(dataFile,delim);
-    P190loc = strsplit(P190,delim);
     readMCS(dataFile,P190,'Results.mat');
     load('Results.mat');
     f1 = Data1'*1e6;%unflipped
@@ -64,8 +68,8 @@ function c = createCSV(dataFile,P190,delim)
         SEL = [SEL,sel];
     end 
 
-    csv_dir = strcat(strjoin(P190loc(1:end-3),delim),strcat(delim,'CSV',delim));
-    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));
+    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));
+    csv_file = strcat(csv_dir,delim,strjoin(dataFileloc(end-2:end),'_'));
     csv_file = strcat(csv_file(1:end-3),'csv');
     
     
