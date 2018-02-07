@@ -1,4 +1,4 @@
-function c = createCSV(dataFile,P190)
+function c = createCSV(dataFile,P190,csv_dir)
 %createCSV(dataFile,P190)
 %
 %createCSV computes the RMS and SEL power for the siesmic streamer data and
@@ -6,10 +6,12 @@ function c = createCSV(dataFile,P190)
 %createCSV depends on readMCS, readP190 and readP190 being in the same
 %directory as this function to work.
 %
-%The csv file is created in a directory on the same level as the Data
-%directory. The name of the file will be 'Line Name_Folder Name_file name.csv'
+%datafile is the raw streamer data. P190 is the navigation file. csv_dir is
+%the desired location for the output csv files.
 %
-%example usage: createCSV('Matlab\Data\Line AT\R000179_1342879566.RAW','P190\MGL1212NTMCS01.mat')
+%Example Usage:
+%createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
+%
 %For more information see github.com/efreneau/machinelearninguw
     if ispc %Choose path deliminator
         delim = '\';
@@ -18,8 +20,7 @@ function c = createCSV(dataFile,P190)
     end
     fs = 500;
     dataFileloc = strsplit(dataFile,delim);
-    P190loc = strsplit(P190,delim);
-    readMCS(dataFile,P190,'Results.mat');
+    readMCS(dataFile,P190,'results.mat');
     load('Results.mat');
     f1 = Data1'*1e6;%unflipped
     
@@ -66,8 +67,8 @@ function c = createCSV(dataFile,P190)
         SEL = [SEL,sel];
     end 
 
-    csv_dir = strcat(strjoin(P190loc(1:end-3),delim),strcat(delim,'CSV',delim));
-    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));
+    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
+    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
     
     
@@ -75,14 +76,14 @@ function c = createCSV(dataFile,P190)
         mkdir(csv_dir);
     end
     
-    if exist(csv_file, 'file')%remove csv if present
+    if exist(csv_file, 'file')%remove csv if present ADD ERROR
         delete(csv_file)
+        disp(strcat(csv_file,' is already present. File rewritten.'))
     end
     fileID = fopen(csv_file,'w');
-    fprintf(fileID,'Water Depth (m),Date,Time,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
-    %fprintf(fileID,'Time_UTC,Ocean_Depth_at_Airgun_meter,Ocean_Depth_at_Receivern_meter,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS');
+    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%column names
     for i = 1:r %Append rows
-        s = strcat(string(Depth),',',string(JulianDay),',',string(Time),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',','X',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
