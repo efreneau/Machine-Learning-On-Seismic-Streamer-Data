@@ -81,10 +81,9 @@ function c = createCSV(dataFile,P190,csv_dir)
         disp(strcat(csv_file,' is already present. File rewritten.'))
     end
     fileID = fopen(csv_file,'w');
-    fprintf(fileID,'Time,Depth at Airgun(m),Date,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
-    %fprintf(fileID,'Time_UTC,Ocean_Depth_at_Airgun_meter,Ocean_Depth_at_Receivern_meter,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS');
+    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%column names
     for i = 1:r %Append rows
-        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',','X',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
