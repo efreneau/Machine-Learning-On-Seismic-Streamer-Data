@@ -20,7 +20,7 @@ function c = createCSV(dataFile,P190,csv_dir)
     end
     fs = 500;
     dataFileloc = strsplit(dataFile,delim);
-    readMCS(dataFile,P190,'Results.mat');
+    readMCS(dataFile,P190,'results.mat');
     load('Results.mat');
     f1 = Data1'*1e6;%unflipped
     
@@ -76,14 +76,15 @@ function c = createCSV(dataFile,P190,csv_dir)
         mkdir(csv_dir);
     end
     
-    if exist(csv_file, 'file')%remove csv if present
+    if exist(csv_file, 'file')%remove csv if present ADD ERROR
         delete(csv_file)
+        disp(strcat(csv_file,' is already present. File rewritten.'))
     end
     fileID = fopen(csv_file,'w');
     fprintf(fileID,'Time,Depth at Airgun(m),Date,X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%add column names
     %fprintf(fileID,'Time_UTC,Ocean_Depth_at_Airgun_meter,Ocean_Depth_at_Receivern_meter,X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,SEL,RMS');
     for i = 1:r %Append rows
-        s = strcat(string(Time),',',string(Depth),',',string(JulianDay),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
