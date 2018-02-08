@@ -1,13 +1,14 @@
-%path1 ='C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\Tape 73\';
+%path1 ='C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\Tape 76\';
 P190 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\P190\MGL1212MCS06.mat';
 csv_location = 'C:\Users\zomege\Documents\Machine Learning\Matlab';
+path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0073.REEL'
 if ispc %Choose path deliminator
     delim = '\';
 else
     delim = '/';
 end
 %tic
-%createCSV_reel(path1,P190,csv_location)
+createCSV_tape(path1,P190,csv_location)
 %toc
 
 %Tape 73 is 4.5 Gb and takes 25 minutes to complete and writes 10 mb of output CSVs,
