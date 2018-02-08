@@ -1,4 +1,4 @@
-function c = createCSV(dataFile,P190,csv_dir)
+function createCSV(dataFile,P190,csv_dir)
 %createCSV(dataFile,P190)
 %
 %createCSV computes the RMS and SEL power for the siesmic streamer data and
