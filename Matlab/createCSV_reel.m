@@ -1,4 +1,4 @@
-function c = createCSV_reel(path1,P190,csv_location)
+function createCSV_reel(path1,P190,csv_location)
 
 maxNumCompThreads(512);
 
