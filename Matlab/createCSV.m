@@ -20,7 +20,7 @@ function createCSV(dataFile,P190,csv_dir)
     end
     fs = 500;
     dataFileloc = strsplit(dataFile,delim);
-    readMCS(dataFile,P190,'results.mat');
+    readMCS(dataFile,P190,'Results.mat');
     load('Results.mat');
     f1 = Data1'*1e6;%unflipped
     
