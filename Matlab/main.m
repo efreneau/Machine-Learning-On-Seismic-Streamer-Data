@@ -1,3 +1,5 @@
+maxNumCompThreads(512);
+
 %path1 ='C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\Tape 76\';
 P190 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\P190\MGL1212MCS06.mat';
 csv_location = 'C:\Users\zomege\Documents\Machine Learning\Matlab';

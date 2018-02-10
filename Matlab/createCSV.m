@@ -20,8 +20,18 @@ function createCSV(dataFile,P190,csv_dir)
     end
     fs = 500;
     dataFileloc = strsplit(dataFile,delim);
-    readMCS(dataFile,P190,'Results.mat');
-    load('Results.mat');
+    result = strjoin(dataFileloc(end-2:end),'_');
+    result = strcat(result(1:end-3),'mat');%Make name for matlab data
+    
+    result_dir = strcat(csv_dir,strcat(delim,'Matlab data',delim));%create folder for matlab converted data
+    if ~exist(result_dir, 'dir')%create directory if not present
+        mkdir(result_dir);
+    end
+    
+    resultFile = strcat(result_dir,delim,result);
+    
+    readMCS(dataFile,P190,resultFile);
+    load(resultFile);
     f1 = Data1'*1e6;%unflipped
     
     sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
