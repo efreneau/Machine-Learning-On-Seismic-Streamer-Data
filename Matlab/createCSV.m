@@ -15,13 +15,30 @@ function createCSV(dataFile,P190,csv_dir)
 %For more information see github.com/efreneau/machinelearninguw
     maxNumCompThreads(512);
     
+    fs = 500;
+    
     if ispc %Choose path deliminator
         delim = '\';
     else
         delim = '/';
     end
-    fs = 500;
+    
     dataFileloc = strsplit(dataFile,delim);
+    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
+    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
+    csv_file = strcat(csv_file(1:end-3),'csv');
+    
+    if ~exist(csv_dir, 'dir')%create directory if not present
+        mkdir(csv_dir);
+    end
+    
+    if exist(csv_file, 'file')%remove csv if present ADD ERROR
+        delete(csv_file)
+        disp(strcat(csv_file,' is already present. File rewritten.'))
+    end
+    
+    fileID = fopen(csv_file,'w');
+    
     result = strjoin(dataFileloc(end-2:end),'_');
     result = strcat(result(1:end-3),'mat');%Make name for matlab data
     
@@ -68,20 +85,6 @@ function createCSV(dataFile,P190,csv_dir)
         SEL(r) = RMS(r)+10*log10(T90(r)); 
     end 
     
-    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
-    csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
-    csv_file = strcat(csv_file(1:end-3),'csv');
-    
-    if ~exist(csv_dir, 'dir')%create directory if not present
-        mkdir(csv_dir);
-    end
-    
-    if exist(csv_file, 'file')%remove csv if present ADD ERROR
-        delete(csv_file)
-        disp(strcat(csv_file,' is already present. File rewritten.'))
-    end
-    
-    fileID = fopen(csv_file,'w');
     fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%column names
     for i = 1:recievernum %Append rows
         s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
@@ -91,17 +94,17 @@ function createCSV(dataFile,P190,csv_dir)
     disp(csv_file)
 end
 
-    function tnin=t90(x);%t90 calculation for normal window
-        fs = 500;
-        tnin = -9999;
-        total = sum(x);%calculate total
-        peak = ceil(length(x)/2);%peak is in the middle of the window
-        for i=(1:100000)
-            if sum(x(peak-i:peak+i))>=0.9*total%iterate over window sizes untill it reaches 90%
-                tnin = 2*i/fs;%return window sizes in seconds
-                return;
-            end
-        end
+function tnin=t90(x)%t90 calculation for a window with it's peak in the middle
+    i = 1;
+    fs = 500;
+    index = 0;
+    ninety = 0.9*sum(x);%calculate total
+    peak = ceil(length(x)/2);%peak is in the middle of the window
+    while(not(sum(x(peak-i:peak+i))>ninety))%iterate over window sizes untill it reaches 90%
+        index = i;
+        i = i + 1;
     end
+    tnin = 2*index/fs;
+end
 
 
