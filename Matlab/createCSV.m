@@ -30,7 +30,7 @@ function createCSV(dataFile,P190,csv_dir)
     
     resultFile = strcat(result_dir,delim,result);
     
-    readMCS(dataFile,P190,resultFile);
+    receiver_depth = readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%unflipped
     
@@ -62,7 +62,6 @@ function createCSV(dataFile,P190,csv_dir)
         peak(r) = peak1;
         T90(r) = t90(DATA);
     end
-
     parfor r=1:recievernum%SEL and RMS
         row = squaredPressure(r,:);
         RMS(r) = 10*log10(sum(row)/(2*fs*T90(r)));
@@ -81,10 +80,11 @@ function createCSV(dataFile,P190,csv_dir)
         delete(csv_file)
         disp(strcat(csv_file,' is already present. File rewritten.'))
     end
+    
     fileID = fopen(csv_file,'w');
     fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%column names
     for i = 1:recievernum %Append rows
-        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',','X',',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
