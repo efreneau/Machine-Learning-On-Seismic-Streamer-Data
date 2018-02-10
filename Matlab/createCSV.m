@@ -13,6 +13,8 @@ function createCSV(dataFile,P190,csv_dir)
 %createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
 %
 %For more information see github.com/efreneau/machinelearninguw
+    maxNumCompThreads(512);
+    
     if ispc %Choose path deliminator
         delim = '\';
     else
@@ -30,7 +32,7 @@ function createCSV(dataFile,P190,csv_dir)
     
     resultFile = strcat(result_dir,delim,result);
     
-    receiver_depth = readMCS(dataFile,P190,resultFile);
+    readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%unflipped
     
@@ -40,13 +42,13 @@ function createCSV(dataFile,P190,csv_dir)
     fData = db2mag(6)*fData; %Group length effect +6dB
     recievernum = size(fData,1);
     
-    squaredPressure = zeros(recievernum,2001);
-    peak = zeros(1,recievernum);%Index of peaks
+    %squaredPressure = zeros(recievernum,2001);%Debugging
+    %peak = zeros(1,recievernum);%Index of peaks
     T90 = zeros(1,recievernum);%Window size of 90% power
     RMS = zeros(1,recievernum);%RMS Power
     SEL = zeros(1,recievernum);%SEL Power
 
-    parfor r=1:recievernum%Find peaks, window around peaks and calculate T90.
+    parfor r=1:recievernum%Find RMS and SEL
         row = fData(r,:);
         [val,peak1] = max(row);
         if peak1 <= 2*fs%Region 1: Peak is too close to the first index
@@ -58,13 +60,11 @@ function createCSV(dataFile,P190,csv_dir)
             DATA = row(peak1-2*fs:end).^2;
             DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
         end
-        squaredPressure(r,:) = DATA;
-        peak(r) = peak1;
+        %squaredPressure(r,:) = DATA;
+        %peak(r) = peak1;
+        %row = squaredPressure(r,:);%SEL and RMS
         T90(r) = t90(DATA);
-    end
-    parfor r=1:recievernum%SEL and RMS
-        row = squaredPressure(r,:);
-        RMS(r) = 10*log10(sum(row)/(2*fs*T90(r)));
+        RMS(r) = 10*log10(sum(DATA)/(2*fs*T90(r)));
         SEL(r) = RMS(r)+10*log10(T90(r)); 
     end 
     

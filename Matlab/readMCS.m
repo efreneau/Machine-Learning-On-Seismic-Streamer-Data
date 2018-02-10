@@ -1,11 +1,11 @@
-function [receiver_depth]=readMCS(Data_File,P190_File,ResultsFileName)
+function readMCS(Data_File,P190_File,ResultsFileName)
+    maxNumCompThreads('automatic');
     % ************************* Import P190 File ******************************
 %     P190_File = 'C:\Users\sabadi\Desktop\Line AT\P190\MGL1212NTMCS01.mat';
     load (P190_File);    % Choose a data file from the folder named "Data"
     % ************************* Import MCS File *******************************
 %     Data_File = 'C:\Users\sabadi\Desktop\Line AT\TAPE0106.REEL\R000179_1342879566.RAW';
     [header, traces] = readSegd(Data_File); % Choose a P190 (navigation) file from the folder named "P190"
-    
     JulianDay = header.julianDay;  % JulianDay
     Time = strcat(num2str(header.hour),':',num2str(header.minute),':',num2str(header.second));
     ShotPoint = nav.shotNumber(header.fileNumber); 
@@ -17,6 +17,7 @@ function [receiver_depth]=readMCS(Data_File,P190_File,ResultsFileName)
     Y_Vessel = nav.vesselY(header.fileNumber)-Y_Airgun;
 
     receivernum1 = header.channelSet1Channels; 
+    receiver_depth = zeros(1,receivernum1);%initialization
     % receivernum2 = header.channelSet2Channels;
     % ++++++ First Streamer
     x_r_utc1 = zeros(1,receivernum1); y_r_utc1 = zeros(1,receivernum1);
@@ -37,19 +38,13 @@ function [receiver_depth]=readMCS(Data_File,P190_File,ResultsFileName)
             Y_R1(u) = 0;
         end       
         Z_R1(u) = 9;
+        receiver_depth(u) = GetReceiverDepth (nav,header,u);
     end
     x1 = traces.channelSet1; 
     Data1 = double(x1);
 
     L = length(Data1);
     Fs = L./header.recordLength;
-    
-    receivernum = size(Data1,2);
-    
-    receiver_depth = zeros(1,receivernum);
-    
-    for i = (1:receivernum)
-        receiver_depth(i) = GetReceiverDepth (nav,header,i);
-    end
+
     %% ***************************** SAVE DATA ********************************
-    save(ResultsFileName,'Data1','receivernum1','X_Airgun','Y_Airgun','Z_Airgun','X_Vessel','Y_Vessel','X_R1','Y_R1','Z_R1','Depth','ShotPoint','Time','JulianDay')  
+    save(ResultsFileName,'Data1','receivernum1','X_Airgun','Y_Airgun','Z_Airgun','X_Vessel','Y_Vessel','X_R1','Y_R1','Z_R1','Depth','ShotPoint','Time','JulianDay','receiver_depth')  
