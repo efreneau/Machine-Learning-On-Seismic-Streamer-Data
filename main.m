@@ -10,23 +10,26 @@ else
     delim = '/';
 end
 
-tic
-createCSV_tape(path1,P190,csv_location)
-toc
+%tic
+%createCSV_tape(path1,P190,csv_location)
+%toc
 
-%Tape 73 is 4.5 Gb and takes 25 minutes to complete and writes 10 mb of output CSVs,
+%Version 1: Tape 73 is 4.5 Gb and takes 25 minutes to complete and writes 10 mb of output CSVs,
 %therefore processing takes about 0.2 gb/min
 %
 %100 Gb will take 8 hours.
 %
-%{
+%Version 2: Tape 73 is 4.5 Gb and takes 18 minutes to complete and writes 10 mb of output CSVs,
+%therefore processing takes about 0.25 gb/min. 25% improvement.
+%
+%100 Gb will take 7 hours.
+
 line = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06';
 tapes = dir(line);
-parfor i=(1:length(tapes))
+for i=(1:length(tapes))
     name = tapes(i).name;
     if(startsWith(name,'Tape','IgnoreCase',true))
        path1 = strcat(line,delim,name,delim);
        createCSV_tape(path1,P190,csv_location)
     end
 end
-%}

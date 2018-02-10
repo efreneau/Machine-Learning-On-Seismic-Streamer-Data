@@ -30,7 +30,7 @@ function createCSV(dataFile,P190,csv_dir)
     
     resultFile = strcat(result_dir,delim,result);
     
-    readMCS(dataFile,P190,resultFile);
+    receiver_depth = readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%unflipped
     
@@ -38,49 +38,40 @@ function createCSV(dataFile,P190,csv_dir)
     fData = sosfilt(sos,f1,2);%filter
     
     fData = db2mag(6)*fData; %Group length effect +6dB
+    recievernum = size(fData,1);
+    
+    squaredPressure = zeros(recievernum,2001);
+    peak = zeros(1,recievernum);%Index of peaks
+    T90 = zeros(1,recievernum);%Window size of 90% power
+    RMS = zeros(1,recievernum);%RMS Power
+    SEL = zeros(1,recievernum);%SEL Power
 
-    squaredPressure = [];%Squared pressure signal windowed around peaks
-    peak = [];%Index of peaks
-    T90 = [];%Window size of 90% power
-    RMS = [];%RMS Power
-    SEL = [];%SEL Power
-
-
-    %Find peaks, window around peaks and calculate T90.
-    for r=1:size(fData,1)
+    parfor r=1:recievernum%Find peaks, window around peaks and calculate T90.
         row = fData(r,:);
         [val,peak1] = max(row);
         if peak1 <= 2*fs%Region 1: Peak is too close to the first index
             DATA = row(1:peak1+2*fs).^2;%from peak1
             DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
-            T90 = [T90,t90(DATA)];
         elseif peak1 > 2*fs && length(row) - peak1>=1000%Region 2: Peak has space on either side
             DATA = row(peak1-2*fs:peak1+2*fs).^2;
-            T90 = [T90,t90(DATA)];
         else %Region 3: Peak is too close to the end
-            DATA = row(peak1-2*fs:end).^2;%-2fs
+            DATA = row(peak1-2*fs:end).^2;
             DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
-            T90 = [T90,t90(DATA)];
         end
-        squaredPressure = [squaredPressure;DATA];
-        peak = [peak,peak1];
+        squaredPressure(r,:) = DATA;
+        peak(r) = peak1;
+        T90(r) = t90(DATA);
     end
 
-    for r=1:size(squaredPressure,1)%RMS
+    parfor r=1:recievernum%SEL and RMS
         row = squaredPressure(r,:);
-        T90a = T90(r);
-        RMS = [RMS,10*log10(sum(row)/(2*fs*T90a))];%extra fs
-    end
-
-    for r=1:size(RMS,2)%SEL
-        sel = RMS(r)+10*log10(T90(r));
-        SEL = [SEL,sel];
+        RMS(r) = 10*log10(sum(row)/(2*fs*T90(r)));
+        SEL(r) = RMS(r)+10*log10(T90(r)); 
     end 
-
+    
     csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
     csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
-    
     
     if ~exist(csv_dir, 'dir')%create directory if not present
         mkdir(csv_dir);
@@ -90,10 +81,11 @@ function createCSV(dataFile,P190,csv_dir)
         delete(csv_file)
         disp(strcat(csv_file,' is already present. File rewritten.'))
     end
+    
     fileID = fopen(csv_file,'w');
     fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS\n');%column names
-    for i = 1:r %Append rows
-        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',','X',',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
+    for i = 1:recievernum %Append rows
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
