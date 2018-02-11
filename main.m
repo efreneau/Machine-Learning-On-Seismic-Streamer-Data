@@ -1,30 +1,20 @@
-maxNumCompThreads(512);
-
-%path1 ='C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\Tape 76\';
 P190 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\P190\MGL1212MCS06.mat';
 csv_location = 'C:\Users\zomege\Documents\Machine Learning\Matlab';
-path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0073.REEL\';
+line = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06';
+path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0076.REEL\';
+
 if ispc %Choose path deliminator
     delim = '\';
 else
     delim = '/';
 end
 
-%tic
-%createCSV_tape(path1,P190,csv_location)
-%toc
 
-%Version 1: Tape 73 is 4.5 Gb and takes 25 minutes to complete and writes 10 mb of output CSVs,
-%therefore processing takes about 0.2 gb/min
-%
-%100 Gb will take 8 hours.
-%
-%Version 2: Tape 73 is 4.5 Gb and takes 18 minutes to complete and writes 10 mb of output CSVs,
-%therefore processing takes about 0.25 gb/min. 25% improvement.
-%
-%100 Gb will take 7 hours.
+tic
+createCSV_tape(path1,P190,csv_location)
+toc
 
-line = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06';
+%{
 tapes = dir(line);
 for i=(1:length(tapes))
     name = tapes(i).name;
@@ -33,3 +23,4 @@ for i=(1:length(tapes))
        createCSV_tape(path1,P190,csv_location)
     end
 end
+%}

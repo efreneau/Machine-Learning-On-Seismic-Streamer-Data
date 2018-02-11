@@ -1,4 +1,5 @@
 function createCSV_tape(path1,P190,csv_location)
+    maxNumCompThreads(512);
     files = dir(path1);
     parfor i = (1:length(files))
         file = files(i).name;
