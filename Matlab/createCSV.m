@@ -1,5 +1,5 @@
 function createCSV(dataFile,P190,csv_dir)
-%createCSV(dataFile,P190)
+%createCSV(dataFile,P190,csv_dir)
 %
 %createCSV computes the RMS and SEL power for the siesmic streamer data and
 %outputs those and the navigation data found in the P190 to a CSV file. 
@@ -48,7 +48,7 @@ function createCSV(dataFile,P190,csv_dir)
     end
     
     resultFile = strcat(result_dir,delim,result);
-    
+    disp(dataFile)%%%
     readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%unflipped
