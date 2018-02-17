@@ -9,10 +9,13 @@ else
     delim = '/';
 end
 
+x = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0076.REEL\R002179_1342731390'
 
 tic
-createCSV_tape(path1,P190,csv_location)
+%createCSV_tape(path1,P190,csv_location)
+createCSV(x,P190,csv_location)
 toc
+
 
 %{
 tapes = dir(line);

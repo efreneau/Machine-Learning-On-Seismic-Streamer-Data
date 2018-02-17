@@ -71,7 +71,7 @@ function createCSV(dataFile,P190,csv_dir)
         if peak1 <= 2*fs%Region 1: Peak is too close to the first index
             DATA = row(1:peak1+2*fs).^2;%from peak1
             DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];
-        elseif peak1 > 2*fs && length(row) - peak1>=1000%Region 2: Peak has space on either side
+        elseif peak1 > 2*fs && length(row) - peak1>=2*fs%Region 2: Peak has space on either side
             DATA = row(peak1-2*fs:peak1+2*fs).^2;
         else %Region 3: Peak is too close to the end
             DATA = row(peak1-2*fs:end).^2;
