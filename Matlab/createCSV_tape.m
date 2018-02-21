@@ -8,8 +8,8 @@ function createCSV_tape(path1,P190,csv_location)
             try
                 createCSV(location,P190,csv_location);
             catch
-                warning('Index exceeds matrix dimensions.');
-                disp('Out of bounds shot number. File Ignored.')
+                warning('Out of bounds shot number. File Ignored.');
+                delete(location)
             end
         end
     end

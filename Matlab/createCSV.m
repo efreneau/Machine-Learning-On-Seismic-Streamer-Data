@@ -48,7 +48,7 @@ function createCSV(dataFile,P190,csv_dir)
     end
     
     resultFile = strcat(result_dir,delim,result);
-    disp(dataFile)%%%
+    disp(dataFile)
     readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%unflipped
