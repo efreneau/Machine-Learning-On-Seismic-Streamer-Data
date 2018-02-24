@@ -29,3 +29,14 @@ Data is Depth of Airgun(m) [0] , Depth of Reciever(m) [1] , Range(m) [2] , SEL [
 ### Usage ###
 
 ### Resources ###
+
+**Sound source localization technique using a seismic streamer
+and its extension for whale localization during seismic surveys**([here](https://github.com/efreneau/machinelearninguw/blob/master/Relevant%20Papers/Abadi_et_al_2015.pdf)): Background
+
+**Estimating the location of baleen whale calls
+using dual streamers to support mitigation
+procedures in seismic reflection surveys**([here](https://github.com/efreneau/machinelearninguw/blob/master/Relevant%20Papers/Abadi_et_al_2017.pdf)): Background
+
+**Estimating shallow water sound power levels and mitigation
+radii for the R/V Marcus G. Langseth using an 8 km long MCS
+streamer**([here](https://github.com/efreneau/machinelearninguw/blob/master/Relevant%20Papers/Crone_et%20al_2014_Estimating%20shallow%20water%20sound%20power%20levels%20and%20mitigation.pdf)): Calculating RMS and SEL for a non-stationary process. Method used here.
