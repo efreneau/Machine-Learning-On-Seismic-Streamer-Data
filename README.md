@@ -1,9 +1,6 @@
 ## Machine Learning On Seismic Streamer Data ##
 
-Research project to determine the relationship of receiver and airgun depth and range to the
-amount of noise produced during during seismic reflection studies on the ocean using regression.
-
-The goal of this project is to
+The goal is to create a model for noise given airgun depth, hydrophone depth and range during seismic reflection surveys. This project uses regression in Python training on **Line 06** and test using **Line 05** from the *R/V Marcus G. Langseth* on cruise *MGL1212* from July 12–24, 2012.
 
 ![](https://i.imgur.com/Xthvue9.png)
 
