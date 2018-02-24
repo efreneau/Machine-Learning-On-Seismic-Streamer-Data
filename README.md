@@ -26,7 +26,11 @@ Data is Depth of Airgun(m) [0] , Depth of Reciever(m) [1] , Range(m) [2] , SEL [
 
 **Matlab/readSegd.m:** Read a Langseth SEG-D format RAW file.
 
-### Usage ###
+### Process ###
+1. Create CSVs for streamer data.
+2. Import CSV into Python.
+3. Train machine learning regression on the training data (Line 6).
+4. Test on testing data (Line 5).
 
 ### Resources ###
 
