@@ -31,12 +31,12 @@ function createCSV(dataFile,P190,csv_dir)
     if ~exist(csv_dir, 'dir')%create directory if not present
         mkdir(csv_dir);
     end
-    
-    if exist(csv_file, 'file')%remove csv if present ADD ERROR
-        delete(csv_file)
-        disp(strcat(csv_file,' is already present. File rewritten.'))
+
+    if exist(csv_file, 'file')%return if present print message
+        disp(strcat(csv_file,' is already present. File skipped.'))
+        return;
     end
-    
+ 
     fileID = fopen(csv_file,'w');
     
     result = strjoin(dataFileloc(end-2:end),'_');
@@ -58,9 +58,7 @@ function createCSV(dataFile,P190,csv_dir)
     
     fData = db2mag(6)*fData; %Group length effect +6dB
     recievernum = size(fData,1);
-    
-    %squaredPressure = zeros(recievernum,2001);%Debugging
-    %peak = zeros(1,recievernum);%Index of peaks
+
     T90 = zeros(1,recievernum);%Window size of 90% power
     RMS = zeros(1,recievernum);%RMS Power
     SEL = zeros(1,recievernum);%SEL Power
@@ -77,9 +75,6 @@ function createCSV(dataFile,P190,csv_dir)
             DATA = row(peak1-2*fs:end).^2;
             DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
         end
-        %squaredPressure(r,:) = DATA;
-        %peak(r) = peak1;
-        %row = squaredPressure(r,:);%SEL and RMS
         T90(r) = t90(DATA);
         RMS(r) = 10*log10(sum(DATA)/(2*fs*T90(r)));
         SEL(r) = RMS(r)+10*log10(T90(r)); 

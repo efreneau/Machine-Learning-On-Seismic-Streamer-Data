@@ -1,7 +1,9 @@
-P190 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\P190\MGL1212MCS06.mat';
-csv_location = 'C:\Users\zomege\Documents\Machine Learning\Matlab';
-line = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06';
-path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0076.REEL\';
+%path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0076.REEL\';
+
+P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS05.mat';
+csv_location = 'D:\Machine Learning\Matlab\Testing_Data_(Line_05)';
+line = 'D:\Machine Learning\Matlab\Data\Line 05';
+
 
 if ispc %Choose path deliminator
     delim = '\';
@@ -9,11 +11,10 @@ else
     delim = '/';
 end
 
-tic
-createCSV_tape(path1,P190,csv_location)
-toc
+%tic
+%createCSV_tape(path1,P190,csv_location)
+%toc
 
-%{
 tapes = dir(line);
 for i=(1:length(tapes))
     name = tapes(i).name;
@@ -22,4 +23,3 @@ for i=(1:length(tapes))
        createCSV_tape(path1,P190,csv_location)
     end
 end
-%}
