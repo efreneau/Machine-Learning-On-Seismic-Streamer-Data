@@ -54,7 +54,7 @@ function createCSV2(dataFile,P190,csv_dir)
     fData = Data1';%unflipped
     
     recievernum = size(fData,1);
-    SPL1 = zeros(1,recievernum);
+    SPL1 = zeros(1,recievernum);%preallocate
     SPL2 = zeros(1,recievernum);
     SPL3 = zeros(1,recievernum);
     SPL4 = zeros(1,recievernum);
@@ -66,7 +66,7 @@ function createCSV2(dataFile,P190,csv_dir)
     SEL_full = zeros(1,recievernum);
     
     parfor r=1:recievernum%Find SPL and SEL
-        p_k = fft(fData(r,:));%fft
+        p_k = fft(fData(r,:));%fft %15s
         [SEL1(r),SPL1(r)] = MLM(p_k,1);
         [SEL2(r),SPL2(r)] = MLM(p_k,2);
         [SEL3(r),SPL3(r)] = MLM(p_k,3);
