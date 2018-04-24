@@ -87,22 +87,24 @@ function [SEL,SPL] = MLM(p,band)
 %returns minimum SPL and SEL given the FFT of pressure and a band
     fs = 500;
     N = size(p,2);
-    p_k2 = zeros(1,N);
+    p_k = zeros(1,N);
     r = @(f) round(f*2*N/fs);
         switch band
             case 1%1: 10-110 Hz
-                p_k2(r(10):r(110)) = p(r(10):r(110));
+                p_k(r(10):r(110)) = p(r(10):r(110));
             case 2%2: 40-140 Hz
-                p_k2(r(40):r(140)) = p(r(40):r(140));
+                p_k(r(40):r(140)) = p(r(40):r(140));
             case 3%3: 70-170 Hz
-                p_k2(r(70):r(170)) = p(r(70):r(170));
+                p_k(r(70):r(170)) = p(r(70):r(170));
             case 4%4: 100-200 Hz
-                p_k2(r(100):r(200)) = p(r(100):r(200));
+                p_k(r(100):r(200)) = p(r(100):r(200));
             case 5%full: full band
-                p_k2 = p;%eq #1 (full)
+                p_k = p;%eq #1 (full)
         end
-
-        SEi = (abs(ifft(fftshift(p_k2))).^2)/(N*fs);
+        ip_k2 = abs(ifft(fftshift(p_k))).^2;
+        for i = (1:N-512)
+                SEi(i) = sum(ip_k2(i:512+i));
+        end
         SPi = sqrt(SEi/1.024);%1.024=512/fs
         b = ones(1,1000)/1000;
         SEi_bar = filter(b,1,SEi);
