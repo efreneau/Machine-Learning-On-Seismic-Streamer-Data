@@ -10,10 +10,9 @@ function createCSV2(dataFile,P190,csv_dir)
 %the desired location for the output csv files.
 %
 %Example Usage:
-%createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
+%createCSV2('D:\Machine Learning\Matlab\Data\Line 05\TAPE0026.REEL\R000081_1342402331.RAW','D:\Machine Learning\Matlab\P190\MGL1212MCS05.mat','csvtest');
 %
 %For more information see github.com/efreneau/machinelearninguw
-    maxNumCompThreads(512);
     
     fs = 500;
     
@@ -65,13 +64,42 @@ function createCSV2(dataFile,P190,csv_dir)
     SEL4 = zeros(1,recievernum);
     SEL_full = zeros(1,recievernum);
     
-    parfor r=1:recievernum%Find SPL and SEL
-        p_k = fft(fData(r,:));%fft %15s
-        [SEL1(r),SPL1(r)] = MLM(p_k,1);
-        [SEL2(r),SPL2(r)] = MLM(p_k,2);
-        [SEL3(r),SPL3(r)] = MLM(p_k,3);
-        [SEL4(r),SPL4(r)] = MLM(p_k,4);
-        [SEL_full(r),SPL_full(r)] = MLM(p_k,5);
+    N = 8192;
+    freq = @(f) round(f*2*N/fs);%define frequencies
+    f10 = freq(10);
+    f40 = freq(40);
+    f70 = freq(70);
+    f100 = freq(100);
+    f110 = freq(110);
+    f140 = freq(140);
+    f170 = freq(170);
+    f200 = freq(200);
+
+    for r=1:recievernum%Find SPL and SEL
+        p_t = fData(r,:);
+        p_k = fft(p_t);
+        for band = (1:5)
+            switch band
+                case 1%1: 10-110 Hz
+                    b1 = f10;
+                    b2 = f110;
+                    [SEL1(r),SPL1(r)] = MLM([zeros(1,b1-1),p_k(b1:b2),zeros(1,N-b2)]);
+                case 2%2: 40-140 Hz
+                    b1 = f40;
+                    b2 = f140;
+                    [SEL2(r),SPL2(r)] = MLM([zeros(1,b1-1),p_k(b1:b2),zeros(1,N-b2)]);
+                case 3%3: 70-170 Hz
+                    b1 = f70;
+                    b2 = f170;
+                    [SEL3(r),SPL3(r)] = MLM([zeros(1,b1-1),p_k(b1:b2),zeros(1,N-b2)]);
+                case 4%4: 100-200 Hz
+                    b1 = f100;
+                    b2 = f200;
+                    [SEL4(r),SPL4(r)] = MLM([zeros(1,b1-1),p_k(b1:b2),zeros(1,N-b2)]);
+                case 5%full: full band
+                    [SEL_full(r),SPL_full(r)] = MLMfull(p_t);
+            end
+        end
     end 
     
     fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SPL1,SEL1,SPL2,SEL2,SPL3,SEL3,SPL4,SEL4,SEL_full,SPL_full\n');%column names
@@ -83,36 +111,41 @@ function createCSV2(dataFile,P190,csv_dir)
     disp(csv_file)
 end
 
-function [SEL,SPL] = MLM(p,band)
+function [SEL,SPL] = MLM(p_k)
 %returns minimum SPL and SEL given the FFT of pressure and a band
-    fs = 500;
-    N = size(p,2);
-    p_k = zeros(1,N);
-    r = @(f) round(f*2*N/fs);
-        switch band
-            case 1%1: 10-110 Hz
-                p_k(r(10):r(110)) = p(r(10):r(110));
-            case 2%2: 40-140 Hz
-                p_k(r(40):r(140)) = p(r(40):r(140));
-            case 3%3: 70-170 Hz
-                p_k(r(70):r(170)) = p(r(70):r(170));
-            case 4%4: 100-200 Hz
-                p_k(r(100):r(200)) = p(r(100):r(200));
-            case 5%full: full band
-                p_k = p;%eq #1 (full)
-        end
-        ip_k2 = abs(ifft(fftshift(p_k))).^2;
-        for i = (1:N-512)
-                SEi(i) = sum(ip_k2(i:512+i));
-        end
-        SPi = sqrt(SEi/1.024);%1.024=512/fs
-        b = ones(1,1000)/1000;
-        SEi_bar = filter(b,1,SEi);
-        SPi_bar = filter(b,1,SPi);
-        SELi = 10*log10(SEi_bar)+120;%relative to micro
-        SPLi = 10*log10(SPi_bar)+120;
-        SEL = min(SELi);
-        SPL = min(SPLi);
+    N = 8192;
+    ip_k2 = abs(ifft(fftshift(p_k))).^2;
+    SEi = zeros(1,N);
+    for i = (1:N-512)
+        SEi(i) = sum(ip_k2(i:512+i));
+    end
+    SPi = sqrt(SEi/1.024);%1.024=512/fs
+    b = ones(1,1000)/1000;
+    SEi_bar = filter(b,1,SEi);
+    SPi_bar = filter(b,1,SPi);
+    SELi = 10*log10(SEi_bar)+120;%relative to micro
+    SPLi = 10*log10(SPi_bar)+120;
+    SEL = min(SELi);
+    SPL = min(SPLi);
 end
+function [SEL,SPL] = MLMfull(p_t)
+%returns minimum SPL and SEL given the FFT of pressure and a band
+    N = 8192;
+    ip_k2 = p_t.^2;
+    SEi = zeros(1,N);
+    for i = (1:N-512)
+        SEi(i) = sum(ip_k2(i:512+i));
+    end
+    SPi = sqrt(SEi/1.024);%1.024=512/fs
+    b = ones(1,1000)/1000;
+    SEi_bar = filter(b,1,SEi);
+    SPi_bar = filter(b,1,SPi);
+    SELi = 10*log10(SEi_bar)+120;%relative to micro
+    SPLi = 10*log10(SPi_bar)+120;
+    SEL = min(SELi);
+    SPL = min(SPLi);
+end
+
+
 
 

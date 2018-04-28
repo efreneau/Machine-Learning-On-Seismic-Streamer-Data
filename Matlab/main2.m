@@ -1,7 +1,6 @@
 %path1 = 'C:\Users\zomege\Documents\Machine Learning\Matlab\Data\Line 06\TAPE0076.REEL\';
-
 P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS05.mat';
-csv_location = 'D:\Machine Learning\Matlab\Testing_Data_(Line_05)';
+csv_location = 'D:\Machine Learning\Matlab\line 5';
 line = 'D:\Machine Learning\Matlab\Data\Line 05';
 
 
