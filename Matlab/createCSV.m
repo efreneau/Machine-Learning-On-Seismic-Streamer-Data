@@ -13,7 +13,6 @@ function createCSV(dataFile,P190,csv_dir)
 %createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
 %
 %For more information see github.com/efreneau/machinelearninguw
-    maxNumCompThreads(512);
     
     fs = 500;
     
@@ -24,7 +23,7 @@ function createCSV(dataFile,P190,csv_dir)
     end
     
     dataFileloc = strsplit(dataFile,delim);
-    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
+    %csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
     csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
     
@@ -65,7 +64,7 @@ function createCSV(dataFile,P190,csv_dir)
 
     parfor r=1:recievernum%Find RMS and SEL
         row = fData(r,:);
-        [val,peak1] = max(row);
+        [~,peak1] = max(row);
         if peak1 <= 2*fs%Region 1: Peak is too close to the first index
             DATA = row(1:peak1+2*fs).^2;%from peak1
             DATA = [zeros(1,4*fs + 1 - length(DATA)),DATA];

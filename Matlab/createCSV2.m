@@ -23,7 +23,7 @@ function createCSV2(dataFile,P190,csv_dir)
     end
     
     dataFileloc = strsplit(dataFile,delim);
-    csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
+    %csv_dir = strcat(csv_dir,strcat(delim,'CSV',delim));%Add csv to the end
     csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
     
@@ -75,7 +75,7 @@ function createCSV2(dataFile,P190,csv_dir)
     f170 = freq(170);
     f200 = freq(200);
 
-    for r=1:recievernum%Find SPL and SEL
+    parfor r=1:recievernum%Find SPL and SEL
         p_t = fData(r,:);
         p_k = fft(p_t);
         for band = (1:5)
