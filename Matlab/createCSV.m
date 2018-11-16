@@ -11,7 +11,7 @@ function createCSV(dataFile,P190,csv_dir)
 %
 %Example Usage:
 %createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
-%
+%createCSV('Matlab/Data/Line AT/R000179_1342879566.RAW','Matlab/P190/MGL1212NTMCS01.mat','Matlab');
 %For more information see github.com/efreneau/machinelearninguw
     
     fs = 500;

@@ -1,5 +1,4 @@
 function readMCS(Data_File,P190_File,ResultsFileName)
-    maxNumCompThreads('automatic');
     % ************************* Import P190 File ******************************
 %     P190_File = 'C:\Users\sabadi\Desktop\Line AT\P190\MGL1212NTMCS01.mat';
     load (P190_File);    % Choose a data file from the folder named "Data"

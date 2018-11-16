@@ -9,6 +9,8 @@ else
     delim = '/';
 end
 
+parpool
+
 tapes = dir(line);
 for i=(1:length(tapes))
     name = tapes(i).name;
