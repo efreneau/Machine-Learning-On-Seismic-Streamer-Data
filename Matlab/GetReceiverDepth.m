@@ -16,7 +16,7 @@ function [Ocean_Depth_at_Receiver] = GetReceiverDepth (nav,header,ElementNum)
 
     d = sqrt((X_R1(ElementNum)-Depth_Data(1,:)).^2+(Y_R1(ElementNum)-Depth_Data(2,:)).^2);
     [value_min, index_min] = min(d);
-    if value_min <= 240
+    if value_min <= 50
         Ocean_Depth_at_Receiver = Depth_Data(3,index_min);
     else
         Ocean_Depth_at_Receiver = -99999;%Replaced NAN
