@@ -86,19 +86,36 @@ function createCSV(dataFile,P190,csv_dir)
     end
     fclose(fileID);
     disp(csv_file)
+    close all;
+    plot(T90)%%%
+    figure;
+    plot(SEL)
+    hold on;
+    plot(RMS)
 end
 
-function tnin=t90(x)%t90 calculation for a window with it's peak in the middle
-    i = 1;
+function tnin=t90(x)%t90 calculation for a 4s window
     fs = 500;
-    index = 0;
-    ninety = 0.9*sum(x);%calculate total
-    peak = ceil(length(x)/2);%peak is in the middle of the window
-    while(not(sum(x(peak-i:peak+i))>ninety))%iterate over window sizes untill it reaches 90%
-        index = i;
-        i = i + 1;
+    index = 1;
+    xsum = sum(x);
+    e05 = 0.05*xsum;% 5% energy point
+    e95 = 0.95*xsum;% 95% energy point
+    n05 = 1;%index of 5% energy point
+    n95 = 1;%index of 95% energy point
+    ex = 0;%running sum for energy
+    while(n95==1)%iterate over window untill an n95 is reached
+        ex = ex + x(index);
+        if(n05==1 && ex>=e05)%at first instance of energy above e05 record the index
+            n05 = index;
+        end
+        if(ex>=e95)
+            n95 = index;
+        end
+        index = index + 1;
     end
-    tnin = 2*index/fs;
+    tnin = (n95-n05)/fs%compute T90 = t95-t05
 end
+%createCSV('C:\Users\admin\Desktop\Machine Learning\Matlab\R000540_1342888533.RAW','C:\Users\admin\Desktop\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat','C:\Users\admin\Desktop\Machine Learning\Matlab\test')
+%createCSV('C:\Users\admin\Desktop\Machine Learning\Matlab\R000095_1342877588.RAW','C:\Users\admin\Desktop\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat','C:\Users\admin\Desktop\Machine Learning\Matlab\test2')
 
 
