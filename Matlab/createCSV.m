@@ -58,9 +58,20 @@ function createCSV(dataFile,P190,csv_dir)
     fData = db2mag(6)*fData; %Group length effect +6dB
     recievernum = size(fData,1);
 
-    T90 = zeros(1,recievernum);%Window size of 90% power
-    RMS = zeros(1,recievernum);%RMS Power
-    SEL = zeros(1,recievernum);%SEL Power
+    T90 = zeros(5,recievernum);%Window size of 90% power
+    RMS = zeros(5,recievernum);%RMS Power
+    SEL = zeros(5,recievernum);%SEL Power
+    
+    N = 2001;
+    freq = @(f) round(f*2*N/fs);%define frequencies
+    f10 = freq(10);
+    f40 = freq(40);
+    f70 = freq(70);
+    f100 = freq(100);
+    f110 = freq(110);
+    f140 = freq(140);
+    f170 = freq(170);
+    f200 = freq(200);
 
     parfor r=1:recievernum%Find RMS and SEL
         row = fData(r,:);
@@ -74,24 +85,42 @@ function createCSV(dataFile,P190,csv_dir)
             DATA = row(peak1-2*fs:end).^2;
             DATA = [DATA, zeros(1,4*fs + 1 - length(DATA))];
         end
-        T90(r) = t90(DATA);
-        RMS(r) = 10*log10(sum(DATA)/(2*fs*T90(r)));
-        SEL(r) = RMS(r)+10*log10(T90(r)); 
+        e_f = fft(DATA);
+        e = DATA;
+        for band = 1:5%for each frequency band
+            switch band
+                case 1%1: 10-110 Hz
+                    b1 = f10;
+                    b2 = f110;
+                    e = abs(ifft(fftshift([zeros(1,b1-1),e_f(b1:b2),zeros(1,N-b2)])));
+                case 2%2: 40-140 Hz
+                    b1 = f40;
+                    b2 = f140;
+                    e = abs(ifft(fftshift([zeros(1,b1-1),e_f(b1:b2),zeros(1,N-b2)])));
+                case 3%3: 70-170 Hz
+                    b1 = f70;
+                    b2 = f170;
+                    e = abs(ifft(fftshift([zeros(1,b1-1),e_f(b1:b2),zeros(1,N-b2)])));
+                case 4%4: 100-200 Hz
+                    b1 = f100;
+                    b2 = f200;
+                    e = abs(ifft(fftshift([zeros(1,b1-1),e_f(b1:b2),zeros(1,N-b2)])));
+                case 5%full: full band
+                    e=DATA;
+            end
+            T90(band,r) = t90(e);
+            RMS(band,r) = 10*log10(sum(e)/(2*fs*T90(band,r)));
+            SEL(band,r) = RMS(band,r)+10*log10(T90(band,r)); 
+        end
     end 
     
-    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL,RMS,T90\n');%column names
+    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SEL1,RMS1,SEL2,RMS2,SEL3,RMS3,SEL4,RMS4,SEL_full,RMS_full,T90_1,T90_2,T90_3,T90_4,T90_full\n');%column names
     for i = 1:recievernum %Append rows
-        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(i)),',',string(RMS(i)),',',string(T90(i)),'\n');
+        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SEL(1,i)),',',string(RMS(1,i)),',',string(SEL(2,i)),',',string(RMS(2,i)),',',string(SEL(3,i)),',',string(RMS(3,i)),',',string(SEL(4,i)),',',string(RMS(4,i)),',',string(SEL(5,i)),',',string(RMS(5,i)),',',string(T90(1,i)),',',string(T90(2,i)),',',string(T90(3,i)),',',string(T90(4,i)),',',string(T90(5,i)),'\n');
         fprintf(fileID,s);
     end
     fclose(fileID);
     disp(csv_file)
-    close all;
-    plot(T90)%%%
-    figure;
-    plot(SEL)
-    hold on;
-    plot(RMS)
 end
 
 function tnin=t90(x)%t90 calculation for a 4s window
@@ -113,7 +142,7 @@ function tnin=t90(x)%t90 calculation for a 4s window
         end
         index = index + 1;
     end
-    tnin = (n95-n05)/fs%compute T90 = t95-t05
+    tnin = (n95-n05)/fs;%compute T90 = t95-t05
 end
 %createCSV('C:\Users\admin\Desktop\Machine Learning\Matlab\R000540_1342888533.RAW','C:\Users\admin\Desktop\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat','C:\Users\admin\Desktop\Machine Learning\Matlab\test')
 %createCSV('C:\Users\admin\Desktop\Machine Learning\Matlab\R000095_1342877588.RAW','C:\Users\admin\Desktop\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat','C:\Users\admin\Desktop\Machine Learning\Matlab\test2')
