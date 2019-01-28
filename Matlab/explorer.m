@@ -1,6 +1,6 @@
 clear all; clc;
 fileID = fopen('full.txt','w');
-path = 'D:\Machine Learning\NewCSV\CSV1';
+path = 'D:\Machine Learning\NewCSV\CSV1\';
 lines = dir(path)
 
 for i = (1:length(lines))
