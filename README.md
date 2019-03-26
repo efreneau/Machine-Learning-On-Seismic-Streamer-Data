@@ -21,7 +21,7 @@ streamer*.
 
 **/CSV/:** All code dealing with preprocessing and creating CSVs. This code relies on parallelization to save time. CSV1 contains RMS, SEL and T90 results. CSV2 contains MLMs.
 
-**/Lists/:** Contains a list of all of the csv files and the list of files I determined to bad from the crew's logs.
+**/Lists/:** Contains a list of all of the csv files and the list of files I determined to be bad from the crew's logs.
 
 **/Matlab/:** Matlab code usually having to do with figure generation.
 
