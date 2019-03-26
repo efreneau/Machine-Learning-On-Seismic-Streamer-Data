@@ -1,36 +1,18 @@
 ## Machine Learning On Seismic Streamer Data ##
 
-The goal is to create a model for noise given airgun depth, hydrophone depth and range during seismic reflection surveys. This project uses regression in Python training on **Line 06** and test using **Line 05** from the *R/V Marcus G. Langseth* on cruise *MGL1212* from July 12–24, 2012.
-
-![](https://i.imgur.com/Xthvue9.png)
+The goal of this project is to create a model, using machine learning, to quantify the noise produced during seismic reflection surveys done on the ocean. Factors such as given airgun depth, hydrophone depth, range and properties of the ocean and ocean floor have bearing on how far noise travels and in what ways. This project uses data gathered from *R/V Marcus G. Langseth* on cruise *MGL1212* from July 12–24, 2012.
 
 Project website: ​[https://github.com/efreneau/machinelearninguw](https://github.com/efreneau/machinelearninguw)
 
-### Files ###
-
-**Power Plot.ipynb:** Import data CSVs and plot part of the data. The data array is a 3D array of the form [shot]x[hydrophones]x[data]. 
-
-Data is Depth of Airgun(m) [0] , Depth of Reciever(m) [1] , Range(m) [2] , SEL [3], RMS [4].
-
-**Matlab/main.m:** Main matlab file to calculate power levels and write to CSV.
-
-**Matlab/createCSV_tape.m:** Create CSVs for every raw data file in tape.
-
-**Matlab/createCSV.m:** Create a CSV file for the data file given the P190 navigation file.
-
-**Matlab/GetReceiverDepth.m:** Calculates reciever depth.
-
-**Matlab/readMCS.m:** Extract data from raw data file and P190 navigation file
-
-**Matlab/readP190.m:** Read a Langseth post-processed p190 file and create a matlab structure with this data.
-
-**Matlab/readSegd.m:** Read a Langseth SEG-D format RAW file.
-
 ### Process ###
-1. Create CSVs for streamer data.
-2. Import CSV into Python.
-3. Train machine learning regression on the training data (Line 6).
-4. Test on testing data (Line 5).
+1. Extract sensor data, positions and system properties from the RAW and navigation files.
+2. Throw out bad data identified from the crews logs as they were collecting it.
+3. Compute RMS, SEL and the MLMs (Minimum Level Metrics) for various frequency bands. These are the measures we are trying to predict.
+4. Create CSVs containing abridged results and system properties.
+5. Import CSVs into Python.
+6. Train and test model. We have experimented with linear regression, polynomial regression, spline regression and random forest to model RMS and SEL over the full band. We submited our results to The Journal of the Acoustical Society of America. In the future we plan to model the MLMs, which measure reverberations, and the different measures with respect to frequency band.
+7. Verify through simulation. We use arlpy for simulations, which is a python wrapper for BELLHOP.
+
 
 ### Resources ###
 
