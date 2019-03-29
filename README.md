@@ -19,11 +19,11 @@ streamer*.
 ### Files and Folders ###
 **/:** Files in the root directory are current work, important results and figures.
 
-**/CSV/:** All code dealing with preprocessing and creating CSVs. This code relies on parallelization to save time. CSV1 contains RMS, SEL and T90 results. CSV2 contains MLMs.
-
 **/Lists/:** Contains a list of all of the csv files and the list of files I determined to be bad from the crew's logs.
 
 **/Matlab/:** Matlab code usually having to do with figure generation.
+
+**/Matlab/CSV/:** All code dealing with preprocessing and creating CSVs. This code relies on parallelization to save time. CSV1 contains RMS, SEL and T90 results. CSV2 contains MLMs.
 
 **/P190/:** Processed navigation files in .mat format.
 
