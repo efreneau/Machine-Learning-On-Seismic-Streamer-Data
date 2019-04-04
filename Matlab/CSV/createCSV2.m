@@ -36,6 +36,7 @@ function createCSV2(dataFile,P190,csv_dir)
     readMCS(dataFile,P190,resultFile);
     load(resultFile);
     fData = Data1';%unflipped
+    fData = flip(fData,1);
     
     fs = 500;
     recievernum = size(fData,1);
