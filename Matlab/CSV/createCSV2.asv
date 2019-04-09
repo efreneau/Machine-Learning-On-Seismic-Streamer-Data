@@ -63,7 +63,7 @@ function createCSV2(dataFile,P190,csv_dir)
     end 
 
     fileID = fopen(csv_file,'w');
-    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SPL1,SEL1,SPL2,SEL2,SPL3,SEL3,SPL4,SEL4,SPL_full,SEL_full,Peak_Index\n');%column names
+    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,SPL1,SEL1,SPL2,SEL2,SPL3,SEL3,SPL4,SEL4,SL_full,SPL_full,Peak_Index\n');%column names
     for i = 1:recievernum %Append rows
         s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(SPL(1,i)),',',string(SEL_MLM(1,i)),',',string(SPL(2,i)),',',string(SEL_MLM(2,i)),',',string(SPL(3,i)),',',string(SEL_MLM(3,i)),',',string(SPL(4,i)),',',string(SEL_MLM(4,i)),',',string(SPL(5,i)),',',string(SEL_MLM(5,i)),',',string(peak(i)),',','\n');
         fprintf(fileID,s);
