@@ -1,5 +1,5 @@
 function createCSV(dataFile,P190,csv_dir)
-%createCSV('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','D:\Machine Learning\Matlab\P190\MGL1212MCS05.mat','csvtest');
+%createCSV('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','csvtest');
 %For more information see github.com/efreneau/machinelearninguw
     
     fs = 500;
@@ -47,19 +47,19 @@ function createCSV(dataFile,P190,csv_dir)
     T90 = zeros(5,recievernum);%Window size of 90% power
     RMS = zeros(5,recievernum);
     SEL = zeros(5,recievernum);
-    peaks = zeros(1,recievernum);
+    peak = zeros(1,recievernum);
     ts_windowed = zeros(recievernum,4*fs+1);
     e = zeros(recievernum,4*fs+1);%energy after filtering, windowed
     
     parfor r=1:recievernum%Find RMS and SEL
         %row = fData(r,:);
-        [~,peaks(r)] = max(fData(r,:));
-        if peaks(r) <= 2*fs                                    %Region 1: Peak is too close to the first index
-            ts_windowed(r,:) = [zeros(1,4*fs + 1 - (peaks(r)+2*fs)),fData(r,1:peaks(r)+2*fs)];
-        elseif peaks(r) > 2*fs && length(fData(r,:)) - peaks(r)>=2*fs    %Region 2: Peak has space on either side
-            ts_windowed(r,:) = fData(r,peaks(r)-2*fs:peaks(r)+2*fs);
+        [~,peak(r)] = max(fData(r,:));
+        if peak(r) <= 2*fs                                    %Region 1: Peak is too close to the first index
+            ts_windowed(r,:) = [zeros(1,4*fs + 1 - (peak(r)+2*fs)),fData(r,1:peak(r)+2*fs)];
+        elseif peak(r) > 2*fs && length(fData(r,:)) - peak(r)>=2*fs    %Region 2: Peak has space on either side
+            ts_windowed(r,:) = fData(r,peak(r)-2*fs:peak(r)+2*fs);
         else                                                %Region 3: Peak is too close to the end
-            ts_windowed(r,:) = [fData(r,peaks(r)-2*fs:end), zeros(1,2*fs - (size(fData,2)-peaks(r)))];
+            ts_windowed(r,:) = [fData(r,peak(r)-2*fs:end), zeros(1,2*fs - (size(fData,2)-peak(r)))];
         end
 
         for band = 1:5%for each frequency band
