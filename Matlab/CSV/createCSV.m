@@ -54,11 +54,11 @@ function createCSV(dataFile,P190,csv_dir)
     parfor r=1:recievernum%Find RMS and SEL
         %row = fData(r,:);
         [~,peak(r)] = max(fData(r,:));
-        if peak(r) <= 2*fs                                    %Region 1: Peak is too close to the first index
+        if peak(r) <= 2*fs%Region 1: Peak is too close to the first index
             ts_windowed(r,:) = [zeros(1,4*fs + 1 - (peak(r)+2*fs)),fData(r,1:peak(r)+2*fs)];
-        elseif peak(r) > 2*fs && length(fData(r,:)) - peak(r)>=2*fs    %Region 2: Peak has space on either side
+        elseif peak(r) > 2*fs && length(fData(r,:)) - peak(r)>=2*fs%Region 2: Peak has space on either side
             ts_windowed(r,:) = fData(r,peak(r)-2*fs:peak(r)+2*fs);
-        else                                                %Region 3: Peak is too close to the end
+        else%Region 3: Peak is too close to the end
             ts_windowed(r,:) = [fData(r,peak(r)-2*fs:end), zeros(1,2*fs - (size(fData,2)-peak(r)))];
         end
 
@@ -73,6 +73,7 @@ function createCSV(dataFile,P190,csv_dir)
                 case 4%4: 100-200 Hz
                     e(r,:) = bandpass(ts_windowed(r,:),[100, 200],fs).^2;
                 case 5%full: full band
+                    e(r,:) = ts_windowed(r,:).^2;%%%new
                     %no filtering
             end
             T90(band,r) = t90(e(r,:));
