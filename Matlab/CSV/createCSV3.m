@@ -50,7 +50,7 @@ function createCSV3(dataFile,P190,csv_dir)
     SPL = zeros(5,recievernum);
     SEL_MLM = zeros(5,recievernum);
     e = zeros(size(fData));%energy after filtering, windowed
-    [~,peak] = max(fData,[],2);%%%1
+    [~,peak] = max(fData,[],2);
     
     parfor r=1:recievernum%Find RMS and SEL
         for band = 1:5%for each frequency band
@@ -78,30 +78,52 @@ function createCSV3(dataFile,P190,csv_dir)
             end
         end
     end 
-    
-    fileID = fopen(csv_file,'w');
-    fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,SEL1,RMS1,SEL2,RMS2,SEL3,RMS3,SEL4,RMS4,SEL_5,RMS_5,SPL1,SEL_MLM1,SPL2,SEL_MLM2,SPL3,SEL_MLM3,SPL4,SEL_MLM4,SPL_5,SEL_MLM5\n');%column names
-    for i = 1:recievernum %Append rows
-        s = strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i)),',',string(T90(1,i)),',',string(T90(2,i)),',',string(T90(3,i)),',',string(T90(4,i)),',',string(T90(5,i)),',',string(SEL(1,i)),',',string(RMS(1,i)),',',string(SEL(2,i)),',',string(RMS(2,i)),',',string(SEL(3,i)),',',string(RMS(3,i)),',',string(SEL(4,i)),',',string(RMS(4,i)),',',string(SEL(5,i)),',',string(RMS(5,i)),',',string(SPL(1,i)),',',string(SEL_MLM(1,i)),',',string(SPL(2,i)),',',string(SEL_MLM(2,i)),',',string(SPL(3,i)),',',string(SEL_MLM(3,i)),',',string(SPL(4,i)),',',string(SEL_MLM(4,i)),',',string(SPL(5,i)),',',string(SEL_MLM(5,i)),'\n');
-        fprintf(fileID,s);
+    try
+        fileID = fopen(csv_file,'w');
+        %add line tape and file
+        fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5\n');%column names
+        for i = 1:recievernum %Append rows
+            fprintf(fileID,strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i))));
+            for j=(1:5)
+                fprintf(fileID,strcat(',',string(T90(j,i))));
+            end
+            for j=(1:5)
+                fprintf(fileID,strcat(',',string(RMS(j,i))));
+            end
+            for j=(1:5)
+                fprintf(fileID,strcat(',',string(SEL(j,i))));
+            end
+            for j=(1:5)
+                fprintf(fileID,strcat(',',string(SPL(j,i))));
+            end
+            for j=(1:5)
+                fprintf(fileID,strcat(',',string(SEL_MLM(j,i))));
+            end
+            fprintf(fileID,'\n');
+        end 
+        fclose(fileID);
+    catch er
+        fclose(fileID);
+        del csv_file;
+        disp(['ID: ' ME.identifier])
+        rethrow(er);
     end
-    fclose(fileID);
-    disp(csv_file)
 end
 
 function [SEL,SPL] = MLM(energy, peak)
 %returns minimum SPL and SEL given the FFT of pressure and a band
+    fs = 500;
     N = size(energy,2);
     SEi = zeros(1,N);
     for i = (1:N-512)
-        SEi(i) = sum(energy(i:512+i));%index offset
+        SEi(i) = sum(energy(i:512+i))/fs;%index offset
     end
     SPi = sqrt(SEi/1.024);%1.024=512/fs
     b = ones(1,1000)/1000;
     SEi_bar = filter(b,1,SEi);
     SPi_bar = filter(b,1,SPi);
-    SELi = 10*log10(SEi_bar)+120;%relative to micro
-    SPLi = 10*log10(SPi_bar)+120;
+    SELi = 10*log10(SEi_bar);%clarify
+    SPLi = 10*log10(SPi_bar);
     SEL = min(SELi(peak:end));
     SPL = min(SPLi(peak:end));
 end

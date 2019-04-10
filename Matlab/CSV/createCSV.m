@@ -73,8 +73,7 @@ function createCSV(dataFile,P190,csv_dir)
                 case 4%4: 100-200 Hz
                     e(r,:) = bandpass(ts_windowed(r,:),[100, 200],fs).^2;
                 case 5%full: full band
-                    e(r,:) = ts_windowed(r,:).^2;%%%new
-                    %no filtering
+                    e(r,:) = ts_windowed(r,:).^2;
             end
             T90(band,r) = t90(e(r,:));
             RMS(band,r) = 10*log10(sum(e(r,:))/(2*fs*T90(band,r)));

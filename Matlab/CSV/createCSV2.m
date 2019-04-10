@@ -74,17 +74,18 @@ end
 
 function [SEL,SPL] = MLM(energy, peak)
 %returns minimum SPL and SEL given the FFT of pressure and a band
+    fs = 500;
     N = size(energy,2);
     SEi = zeros(1,N);
     for i = (1:N-512)
-        SEi(i) = sum(energy(i:512+i));%index offset
+        SEi(i) = sum(energy(i:512+i))/fs;%index offset
     end
     SPi = sqrt(SEi/1.024);%1.024=512/fs
     b = ones(1,1000)/1000;
     SEi_bar = filter(b,1,SEi);
     SPi_bar = filter(b,1,SPi);
-    SELi = 10*log10(SEi_bar)+120;%relative to micro
-    SPLi = 10*log10(SPi_bar)+120;
+    SELi = 10*log10(SEi_bar);
+    SPLi = 10*log10(SPi_bar);
     SEL = min(SELi(peak:end));
     SPL = min(SPLi(peak:end));
 end
