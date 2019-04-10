@@ -42,3 +42,5 @@ procedures in seismic reflection surveys**([here](https://github.com/efreneau/ma
 **Estimating shallow water sound power levels and mitigation
 radii for the R/V Marcus G. Langseth using an 8 km long MCS
 streamer**([here](https://github.com/efreneau/machinelearninguw/blob/master/Relevant%20Papers/Crone_et%20al_2014_Estimating%20shallow%20water%20sound%20power%20levels%20and%20mitigation.pdf)): Calculating RMS and SEL for a non-stationary process. Method used here.
+
+**Quantifying seismic survey reverberation off the Alaskan North Slope**([here](https://github.com/efreneau/Machine-Learning-On-Seismic-Streamer-Data/blob/master/Relevant%20Papers/Guerra_Thode_et%20al_2011_read.pdf)): Process to compute MLMs discussed here.
