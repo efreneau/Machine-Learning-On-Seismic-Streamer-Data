@@ -11,6 +11,9 @@ function createCSV3(dataFile,P190,csv_dir)
     end
     
     dataFileloc = strsplit(dataFile,delim);
+    filename = dataFileloc(end);
+    tapename = dataFileloc(end-1);
+    linename = dataFileloc(end-2);
     csv_file = strcat(csv_dir,strjoin(dataFileloc(end-2:end),'_'));%'Line_Tape_File Name.csv'
     csv_file = strcat(csv_file(1:end-3),'csv');
     
@@ -81,9 +84,9 @@ function createCSV3(dataFile,P190,csv_dir)
     try
         fileID = fopen(csv_file,'w');
         %add line tape and file
-        fprintf(fileID,'Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5\n');%column names
+        fprintf(fileID,'Line,Tape,File,Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5\n');%column names
         for i = 1:recievernum %Append rows
-            fprintf(fileID,strcat(string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i))));
+            fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i))));
             for j=(1:5)
                 fprintf(fileID,strcat(',',string(T90(j,i))));
             end
