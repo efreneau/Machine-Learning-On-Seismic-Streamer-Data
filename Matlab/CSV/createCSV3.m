@@ -119,8 +119,12 @@ function createCSV3(dataFile,P190,csv_dir)
     end 
     try
         fileID = fopen(csv_file,'w');
-        %add line tape and file
-        fprintf(fileID,'Line,Tape,File,Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5\n');%column names
+        fprintf(fileID,strcat('Line,Tape,File,Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,',...%column names
+                               'T90_1,T90_2,T90_3,T90_4,T90_5,T90_6,T90_7,T90_8,T90_9,T90_10,T90_11,T90_12,T90_13,T90_full,',...
+                               'RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,RMS_6,RMS_7,RMS_8,RMS_9,RMS_10,RMS_11,RMS_12,RMS_13,RMS_full,',...
+                               'SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SEL_6,SEL_7,SEL_8,SEL_9,SEL_10,SEL_11,SEL_12,SEL_13,SEL_full,',...
+                               'SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SPL_MLM_6,SPL_MLM_7,SPL_MLM_8,SPL_MLM_9,SPL_MLM_10,SPL_MLM_11,SPL_MLM_12,SPL_MLM_13,SPL_MLM_full,',...
+                               'SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5,SEL_MLM_6,SEL_MLM_7,SEL_MLM_8,SEL_MLM_9,SEL_MLM_10,SEL_MLM_11,SEL_MLM_12,SEL_MLM_13,SEL_MLM_full\n'));
         for i = 1:recievernum %Append rows
             fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i))));
             for j=(1:14)
