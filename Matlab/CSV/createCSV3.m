@@ -47,34 +47,70 @@ function createCSV3(dataFile,P190,csv_dir)
     fData = db2mag(6)*fData; %Group length effect +6dB
     recievernum = size(fData,1);
     
-    T90 = zeros(5,recievernum);%Window size of 90% power
-    RMS = zeros(5,recievernum);
-    SEL = zeros(5,recievernum);
-    SPL = zeros(5,recievernum);
-    SEL_MLM = zeros(5,recievernum);
+    T90 = zeros(14,recievernum);%Window size of 90% power
+    RMS = zeros(14,recievernum);
+    SEL = zeros(14,recievernum);
+    SPL = zeros(14,recievernum);
+    SEL_MLM = zeros(14,recievernum);
     e = zeros(size(fData));%energy after filtering, windowed
     [~,peak] = max(fData,[],2);
     
     parfor r=1:recievernum%Find RMS and SEL
-        for band = 1:5%for each frequency band
-            switch band
-                case 1%1: 10-110 Hz
-                    e(r,:) = bandpass(fData(r,:),[10, 110],fs).^2;
+        for band = 1:14%for each frequency band
+            switch band% 1/3-octave bands
+                case 1% 11.2-14.1 Hz
+                    e(r,:) = bandpass(fData(r,:),[11.2, 14.1],fs).^2;
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
-                case 2%2: 40-140 Hz
-                    e(r,:) = bandpass(fData(r,:),[40, 140],fs).^2;
+                case 2% 14.1-17.8 Hz
+                    e(r,:) = bandpass(fData(r,:),[14.1, 17.8],fs).^2;
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
-                case 3%3: 70-170 Hz
-                    e(r,:) = bandpass(fData(r,:),[70, 170],fs).^2;
+                case 3% 17.8-22.4 Hz
+                    e(r,:) = bandpass(fData(r,:),[17.8, 22.4],fs).^2;
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
-                case 4%4: 100-200 Hz
-                    e(r,:) = bandpass(fData(r,:),[100, 200],fs).^2;
+                case 4% 22.4-28.2 Hz
+                    e(r,:) = bandpass(fData(r,:),[22.4, 28.2],fs).^2;
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
-                case 5%full: full band
+                case 5% 28.2-35.5 Hz
+                    e(r,:) = bandpass(fData(r,:),[28.2, 35.5],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 6% 35.5-44.7 Hz
+                    e(r,:) = bandpass(fData(r,:),[35.5, 44.7],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 7% 44.7-56.2 Hz
+                    e(r,:) = bandpass(fData(r,:),[44.7, 56.2],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 8% 56.2-70.8 Hz
+                    e(r,:) = bandpass(fData(r,:),[56.2, 70.8],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 9% 70.8-89.1 Hz
+                    e(r,:) = bandpass(fData(r,:),[70.8, 89.1],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 10% 89.1-112 Hz
+                    e(r,:) = bandpass(fData(r,:),[89.1, 112],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 11% 112-141 Hz
+                    e(r,:) = bandpass(fData(r,:),[112, 141],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 12% 141-178 Hz
+                    e(r,:) = bandpass(fData(r,:),[141, 178],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 13% 178-224 Hz
+                    e(r,:) = bandpass(fData(r,:),[178, 224],fs).^2;
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
+                case 14%full: full band
                     e(r,:) = fData(r,:).^2;%no filtering
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(e(r,:),peak(r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(e(r,:), peak(r));
@@ -87,19 +123,19 @@ function createCSV3(dataFile,P190,csv_dir)
         fprintf(fileID,'Line,Tape,File,Date,Time,Depth of Airgun(m),Depth of Reciever(m),X Airgun,Y Airgun,Z Airgun,X_R1,Y_R1,Z_R1,Peak_Index,T90_1,T90_2,T90_3,T90_4,T90_5,RMS_1,RMS_2,RMS_3,RMS_4,RMS_5,SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5\n');%column names
         for i = 1:recievernum %Append rows
             fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(i))));
-            for j=(1:5)
+            for j=(1:14)
                 fprintf(fileID,strcat(',',string(T90(j,i))));
             end
-            for j=(1:5)
+            for j=(1:14)
                 fprintf(fileID,strcat(',',string(RMS(j,i))));
             end
-            for j=(1:5)
+            for j=(1:14)
                 fprintf(fileID,strcat(',',string(SEL(j,i))));
             end
-            for j=(1:5)
+            for j=(1:14)
                 fprintf(fileID,strcat(',',string(SPL(j,i))));
             end
-            for j=(1:5)
+            for j=(1:14)
                 fprintf(fileID,strcat(',',string(SEL_MLM(j,i))));
             end
             fprintf(fileID,'\n');
