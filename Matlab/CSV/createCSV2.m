@@ -35,8 +35,10 @@ function createCSV2(dataFile,P190,csv_dir)
     disp(dataFile)
     readMCS(dataFile,P190,resultFile);
     load(resultFile);
-    fData = Data1';%unflipped
-    fData = flip(fData,1);
+    fData = Data1';%flip axis
+    fData = flip(fData,1);%flip reciever
+    fData = fData*1e6;%to micropascals
+    fData = db2mag(6)*fData;%to db
     
     sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];
     fData = sosfilt(sos,fData,2);%filter
@@ -45,21 +47,24 @@ function createCSV2(dataFile,P190,csv_dir)
     recievernum = size(fData,1);%preallocate
     SPL = zeros(5,recievernum);
     SEL_MLM = zeros(5,recievernum);
-    peak = zeros(1,recievernum);
+    %peak = zeros(1,recievernum);
+    [~,peak] = max(fData(:,1:6*fs),[],2);%peak for each band?
     
     parfor r=1:recievernum%Find SPL and SEL
-        %p_t = fData(r,:);
-        [~,peak(r)] = max(fData(r,:));
-        %1: 10-110 Hz
-        [SEL_MLM(1,r),SPL(1,r)] = MLM(bandpass(fData(r,:),[10, 110],fs).^2,peak(r));
-        %2: 40-140 Hz
-        [SEL_MLM(1,r),SPL(1,r)] = MLM(bandpass(fData(r,:),[40, 140],fs).^2,peak(r));
-        %3: 70-170 Hz
-        [SEL_MLM(1,r),SPL(1,r)] = MLM(bandpass(fData(r,:),[70, 170],fs).^2,peak(r));
-        %4: 100-200 Hz
-        [SEL_MLM(1,r),SPL(1,r)] = MLM(bandpass(fData(r,:),[100, 200],fs).^2,peak(r));
-        %full: full band
-        [SEL_MLM(1,r),SPL(1,r)] = MLM(fData(r,:),peak(r));
+        for i=1:5
+            switch i
+                case 1%1: 10-110 Hz
+                    [SEL_MLM(i,r),SPL(i,r)] = MLM(bandpass(fData(r,:),[10, 110],fs).^2,peak(r));
+                case 2%2: 40-140 Hz
+                    [SEL_MLM(i,r),SPL(i,r)] = MLM(bandpass(fData(r,:),[40, 140],fs).^2,peak(r));
+                case 3%3: 70-170 Hz
+                    [SEL_MLM(i,r),SPL(i,r)] = MLM(bandpass(fData(r,:),[70, 170],fs).^2,peak(r));
+                case 4%4: 100-200 Hz
+                    [SEL_MLM(i,r),SPL(i,r)] = MLM(bandpass(fData(r,:),[100, 200],fs).^2,peak(r));
+                otherwise%full: full band
+                    [SEL_MLM(i,r),SPL(i,r)] = MLM(fData(r,:).^2,peak(r));
+            end
+        end
     end 
 
     fileID = fopen(csv_file,'w');
@@ -85,9 +90,9 @@ function [SEL,SPL] = MLM(energy, peak)
     SEi_bar = filter(b,1,SEi);
     SPi_bar = filter(b,1,SPi);
     SELi = 10*log10(SEi_bar);
-    SPLi = 10*log10(SPi_bar);
-    SEL = min(SELi(peak:end));
-    SPL = min(SPLi(peak:end));
+    SPLi = 20*log10(SPi_bar);
+    SEL = min(SELi(peak:peak+10*fs));%peak:peak+window
+    SPL = min(SPLi(peak:peak+10*fs));
 end
 
 
