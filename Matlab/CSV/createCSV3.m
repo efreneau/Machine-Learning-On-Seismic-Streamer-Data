@@ -58,72 +58,72 @@ function createCSV3(dataFile,P190,csv_dir)
             switch band% 1/3-octave bands
                 case 1% 11.2-14.1 Hz
                     energy = bandpass(fData(r,:),[11.2, 14.1],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 2% 14.1-17.8 Hz
                     energy = bandpass(fData(r,:),[14.1, 17.8],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 3% 17.8-22.4 Hz
                     energy = bandpass(fData(r,:),[17.8, 22.4],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 4% 22.4-28.2 Hz
                     energy = bandpass(fData(r,:),[22.4, 28.2],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 5% 28.2-35.5 Hz
                     energy = bandpass(fData(r,:),[28.2, 35.5],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 6% 35.5-44.7 Hz
                     energy = bandpass(fData(r,:),[35.5, 44.7],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 7% 44.7-56.2 Hz
                     energy = bandpass(fData(r,:),[44.7, 56.2],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 8% 56.2-70.8 Hz
                     energy = bandpass(fData(r,:),[56.2, 70.8],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 9% 70.8-89.1 Hz
                     energy = bandpass(fData(r,:),[70.8, 89.1],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 10% 89.1-112 Hz
                     energy = bandpass(fData(r,:),[89.1, 112],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 11% 112-141 Hz
                     energy = bandpass(fData(r,:),[112, 141],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 12% 141-178 Hz
                     energy = bandpass(fData(r,:),[141, 178],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 13% 178-224 Hz
                     energy = bandpass(fData(r,:),[178, 224],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 14%full: full band
                     energy = fData(r,:).^2;
-                    [~,peak(band,r)] = max(energy(1:6*fs),[],2);%no filtering
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);%no filtering
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
             end
@@ -183,8 +183,8 @@ function [SEL,SPL] = MLM(energy, peak)
     SPi_bar = filter(b,1,SPi);
     SELi = 10*log10(SEi_bar);
     SPLi = 20*log10(SPi_bar);
-    SEL = min(SELi(peak:peak+10*fs));%peak:peak+window
-    SPL = min(SPLi(peak:peak+10*fs));
+    SEL = min(SELi(peak:peak+9*fs));%Look for minimum up to 9s away from peak
+    SPL = min(SPLi(peak:peak+9*fs));
 end
 
 function [t90,rms,sel] = metrics(e,peak)
