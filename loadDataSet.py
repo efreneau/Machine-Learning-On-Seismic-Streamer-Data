@@ -1,8 +1,6 @@
 def loadDataSet(location, skiplist):
 	import pandas as pd
-	
 	dataset = pd.DataFrame()
-	
 	types_dict = {'Line':str,'Tape':str,'File':str,'Date':np.uint16,'Time':str,
 		'Depth_at_Airgun(m)':np.float32,'Depth_at_Reciever(m)':np.float32,
 		'X_Airgun':np.float32,'Y_Airgun':np.float32,'Z_Airgun':np.float32,
@@ -33,11 +31,11 @@ def loadDataSet(location, skiplist):
 	
 	files = os.listdir(location)
 	file = open(skiplist, 'rb',0)
-    s = mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ)
+	s = mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ)
     
-    for filename in sorted(files):
-        if s.find(str.encode(filename)) == -1:
-            dirname = csv_train_path + filename
-            with open(dirname) as csvFile:
-                dataset = dataset.append(pd.read_csv(location,sep=',',header=0,dtype=types_dict,skiprows=0),ignore_index = True)
+	for filename in sorted(files):
+		if s.find(str.encode(filename)) == -1:
+			dirname = csv_train_path + filename
+			with open(dirname) as csvFile:
+				dataset = dataset.append(pd.read_csv(location,sep=',',header=0,dtype=types_dict,skiprows=0),ignore_index = True)
 	return dataset
