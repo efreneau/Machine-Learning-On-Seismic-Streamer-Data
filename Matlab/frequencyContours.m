@@ -1,0 +1,127 @@
+clear all; close all; clc;
+%Create 3 CSV
+%{
+P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212NTMCS01.mat';
+resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.csv';
+dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%shallow
+createCSV3(dataFile,P190,resultFile);
+
+P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat';
+resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.csv';
+dataFile = 'Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW';%deep
+createCSV3(dataFile,P190,resultFile);
+
+P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS07.mat';
+resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.csv';
+dataFile = 'Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW';%mid
+createCSV3(dataFile,P190,resultFile);
+%}
+
+%load files
+[~,~,A] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.csv');
+[~,~,B] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.csv');
+[~,~,C] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.csv');
+
+x = cell2mat(A(2:637,42:69));
+y = cell2mat(B(2:637,42:69));
+z = cell2mat(C(2:637,42:69));
+
+x = flipud(x);
+y = flipud(y);
+z = flipud(z);
+
+%load ranges
+shallow_range = (cell2mat(A(2:637,11)).^2+cell2mat(A(2:637,12)).^2+cell2mat(A(2:637,13)).^2).^0.5;
+mid_range = (cell2mat(B(2:637,11)).^2+cell2mat(B(2:637,12)).^2+cell2mat(B(2:637,13)).^2).^0.5;
+deep_range = (cell2mat(C(2:637,11)).^2+cell2mat(C(2:637,12)).^2+cell2mat(C(2:637,13)).^2).^0.5;
+
+shallow_range = flipud(shallow_range);
+mid_range = flipud(mid_range);
+deep_range = flipud(deep_range);
+
+%Replace outliers defined by 4 stds from the median in a window of 20
+shallow_rms = hampel(x(:,1:13),20,4);
+shallow_sel = hampel(x(:,15:27),20,4);
+mid_rms = hampel(y(:,1:13),20,4);
+mid_sel = hampel(y(:,15:27),20,4);
+deep_rms = hampel(z(:,1:13),20,4);
+deep_sel = hampel(z(:,15:27),20,4);
+
+%Apply gaussian kernel to smooth
+u = -4:4;
+ker = exp(-(u.^2 + u'.^2)/2);
+ker = ker/sum(ker(:));
+
+shallow_rms = conv2(shallow_rms,ker,'same')';
+shallow_sel = conv2(shallow_sel,ker,'same')';
+mid_rms = conv2(mid_rms,ker,'same')';
+mid_sel = conv2(mid_sel,ker,'same')';
+deep_rms = conv2(deep_rms,ker,'same')';
+deep_sel = conv2(deep_sel,ker,'same')';
+
+%Define ticks
+xt = [1,100,200,300,400,500,600];
+yt = [12.5,16,20,25,31.5,40,50,63,80,100,125,160,200];
+
+%Create contours
+figure;
+contourf(deep_sel,5);
+title('deep_sel', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(deep_range(xt),2));%compute ranges rounded to the hundred
+yticks((1:13));
+yticklabels(yt);%band center frequencies
+
+figure;
+contourf(deep_rms,5);
+title('deep_rms', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(deep_range(xt),2));
+yticks((1:13));
+yticklabels(yt);
+
+figure;
+contourf(mid_sel,5);
+title('mid_sel', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(mid_range(xt),2));
+yticks((1:13));
+yticklabels(yt);
+
+figure;
+contourf(mid_rms,5);
+title('mid_rms', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(mid_range(xt),2));
+yticks((1:13));
+yticklabels(yt);
+
+figure;
+contourf(shallow_sel,5);
+title('shallow_sel', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(shallow_range(xt),2));
+yticks((1:13));
+yticklabels(yt);
+
+figure;
+contourf(shallow_rms,5);
+title('shallow_rms', 'Interpreter', 'none');
+xlabel('Range (m)');
+ylabel('Frequency (Hz)');
+xticks(xt);
+xticklabels(roundn(shallow_range(xt),2));
+yticks((1:13));
+yticklabels(yt);
+
+

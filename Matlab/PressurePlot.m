@@ -1,15 +1,15 @@
 clear all; clc; close all;
 %P190 = 'D:\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat';
 resultFile = 'D:\Machine Learning\shallow.mat';
-%dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%Shallow around 40-50m
+%dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%shallow
 
 %P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS05.mat';
 %resultFile = 'D:\Machine Learning\deep.mat';
-%dataFile = 'Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW';%Shallow around 40-50m
+%dataFile = 'Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW';%deep
 
 %P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS07.mat';
 %resultFile = 'D:\Machine Learning\mid.mat';
-%dataFile = 'Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW';%Shallow around 40-50m
+%dataFile = 'Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW';%mid
 %readMCS(dataFile,P190,resultFile);
 load(resultFile);
 
