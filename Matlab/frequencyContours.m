@@ -39,33 +39,41 @@ shallow_range = flipud(shallow_range);
 mid_range = flipud(mid_range);
 deep_range = flipud(deep_range);
 
-%Replace outliers defined by 4 stds from the median in a window of 20
-shallow_rms = hampel(x(:,1:13),20,4);
-shallow_sel = hampel(x(:,15:27),20,4);
-mid_rms = hampel(y(:,1:13),20,4);
-mid_sel = hampel(y(:,15:27),20,4);
-deep_rms = hampel(z(:,1:13),20,4);
-deep_sel = hampel(z(:,15:27),20,4);
+%Replace outliers defined by s stds from the median in a window of w
+w = 20;%20
+s = 4;%4
+shallow_rms = hampel(x(:,1:13),w,s);
+shallow_sel = hampel(x(:,15:27),w,s);
+mid_rms = hampel(y(:,1:13),w,s);
+mid_sel = hampel(y(:,15:27),w,s);
+deep_rms = hampel(z(:,1:13),w,s);
+deep_sel = hampel(z(:,15:27),w,s);
 
 %Apply gaussian kernel to smooth
-u = -4:4;
-ker = exp(-(u.^2 + u'.^2)/2);
-ker = ker/sum(ker(:));
+smooth = true;
+if smooth
+    u = -4:4;%4-4 originaly
+    ker = exp(-(u.^2 + u'.^2)/2);
+    ker = ker/sum(ker(:));
 
-shallow_rms = conv2(shallow_rms,ker,'same')';
-shallow_sel = conv2(shallow_sel,ker,'same')';
-mid_rms = conv2(mid_rms,ker,'same')';
-mid_sel = conv2(mid_sel,ker,'same')';
-deep_rms = conv2(deep_rms,ker,'same')';
-deep_sel = conv2(deep_sel,ker,'same')';
+    shallow_rms = conv2(shallow_rms,ker,'same')';
+    shallow_sel = conv2(shallow_sel,ker,'same')';
+    mid_rms = conv2(mid_rms,ker,'same')';
+    mid_sel = conv2(mid_sel,ker,'same')';
+    deep_rms = conv2(deep_rms,ker,'same')';
+    deep_sel = conv2(deep_sel,ker,'same')';
+end
 
 %Define ticks
 xt = [1,100,200,300,400,500,600];
 yt = [12.5,16,20,25,31.5,40,50,63,80,100,125,160,200];
 
 %Create contours
+layers = 8;
+
 figure;
-contourf(deep_sel,5);
+contourf(deep_sel,layers);
+colorbar;
 title('deep_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -75,7 +83,8 @@ yticks((1:13));
 yticklabels(yt);%band center frequencies
 
 figure;
-contourf(deep_rms,5);
+contourf(deep_rms,layers);
+colorbar;
 title('deep_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -85,7 +94,8 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(mid_sel,5);
+contourf(mid_sel,layers);
+colorbar;
 title('mid_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -95,7 +105,8 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(mid_rms,5);
+contourf(mid_rms,layers);
+colorbar;
 title('mid_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -105,7 +116,8 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(shallow_sel,5);
+contourf(shallow_sel,layers);
+colorbar;
 title('shallow_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -115,7 +127,8 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(shallow_rms,5);
+contourf(shallow_rms,layers);
+colorbar;
 title('shallow_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
