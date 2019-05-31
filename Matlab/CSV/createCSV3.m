@@ -1,6 +1,13 @@
 function createCSV3(dataFile,P190,csv_dir)
 %createCSV3('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','csvtest');
 %For more information see github.com/efreneau/machinelearninguw
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Note: In error, not all attributes have been flipped such that some
+%attributes are incorrectly ordered. As a work around flip all elements
+%such that 1 becomes 636 and 636 becomes 1 for
+%Line,Tape,File,Date,Time,Depth_at_Airgun(m),Depth_at_Reciever(m),X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1 and Z_R1.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     fs = 500;
     
