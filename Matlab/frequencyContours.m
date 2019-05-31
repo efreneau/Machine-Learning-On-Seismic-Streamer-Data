@@ -26,15 +26,17 @@ x = cell2mat(A(2:637,42:69));
 y = cell2mat(B(2:637,42:69));
 z = cell2mat(C(2:637,42:69));
 
-x = flipud(x);
-y = flipud(y);
-z = flipud(z);
+%x = flipud(x);
+%y = flipud(y);
+%z = flipud(z);
 
 %load ranges
 shallow_range = (cell2mat(A(2:637,11)).^2+cell2mat(A(2:637,12)).^2+cell2mat(A(2:637,13)).^2).^0.5;
 mid_range = (cell2mat(B(2:637,11)).^2+cell2mat(B(2:637,12)).^2+cell2mat(B(2:637,13)).^2).^0.5;
 deep_range = (cell2mat(C(2:637,11)).^2+cell2mat(C(2:637,12)).^2+cell2mat(C(2:637,13)).^2).^0.5;
 
+%workaround since certain attributes in the csv's were not flipped when
+%written.
 shallow_range = flipud(shallow_range);
 mid_range = flipud(mid_range);
 deep_range = flipud(deep_range);
@@ -69,11 +71,13 @@ xt = [1,100,200,300,400,500,600];
 yt = [12.5,16,20,25,31.5,40,50,63,80,100,125,160,200];
 
 %Create contours
-layers = 8;
+layers = 20;
 
 figure;
-contourf(deep_sel,layers);
-colorbar;
+[C,h] = contourf(deep_sel,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('deep_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -83,8 +87,10 @@ yticks((1:13));
 yticklabels(yt);%band center frequencies
 
 figure;
-contourf(deep_rms,layers);
-colorbar;
+[C,h] = contourf(deep_rms,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('deep_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -94,8 +100,10 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(mid_sel,layers);
-colorbar;
+[C,h] = contourf(mid_sel,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('mid_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -105,8 +113,10 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(mid_rms,layers);
-colorbar;
+[C,h] = contourf(mid_rms,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('mid_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -116,8 +126,10 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(shallow_sel,layers);
-colorbar;
+[C,h] = contourf(shallow_sel,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('shallow_sel', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
@@ -127,8 +139,10 @@ yticks((1:13));
 yticklabels(yt);
 
 figure;
-contourf(shallow_rms,layers);
-colorbar;
+[C,h] = contourf(shallow_rms,layers);
+set(h,'LineColor','none')
+cb = colorbar; 
+title(cb,'dB rel. \muPa');
 title('shallow_rms', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
