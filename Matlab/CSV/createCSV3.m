@@ -65,7 +65,7 @@ function createCSV3(dataFile,P190,csv_dir)
             switch band% 1/3-octave bands
                 case 1% 11.2-14.1 Hz
                     energy = bandpass(fData(r,:),[11.2, 14.1],fs).^2;
-                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);
+                    [~,peak(band,r)] = max(energy(1:7*fs),[],2);%this makes sure that MLM's can use a consistant forward window 
                     [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
                     [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
                 case 2% 14.1-17.8 Hz
@@ -207,7 +207,7 @@ function [t90,rms,sel] = metrics(e,peak)
     rms = 10*log10(sum(e_windowed)/(2*fs*t90));
     sel = rms+10*log10(t90);
     
-        function tnin = comp_t90(x)%t90 calculation for a 4s window, takes energy as input
+    function tnin = comp_t90(x)%t90 calculation for a arbitrary window, takes energy as input
         fs = 500;
         index = 1;
         xsum = sum(x);
