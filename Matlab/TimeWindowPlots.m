@@ -65,6 +65,7 @@ function [t90,rms,sel] = metrics2(x,size1)%3 metrics calculated for an arbitrary
         RMS(r) = 10*log10(sum(e_windowed)/(2*fs*T90(r)));
         SEL(r) = RMS(r)+10*log10(T90(r));
     end
+    %plot(T90)
     t90 = trimmean(T90,10);
     rms = trimmean(RMS,10);
     sel = trimmean(SEL,10);
