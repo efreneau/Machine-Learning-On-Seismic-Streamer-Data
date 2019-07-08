@@ -1,12 +1,10 @@
+%{
+
+
+
 P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS01.mat';
 csv_location = 'Z:\CSV\Line_01\';
 line = 'Z:\DATA\Line_01';
-
-if ispc %Choose path deliminator
-    delim = '\';
-else
-    delim = '/';
-end
 
 parpool
 
@@ -126,8 +124,15 @@ for i=(1:length(tapes))
        createCSV3_tape(path1,P190,csv_location)
     end
 end
+%}
 
-P190 = 'D:\Machine Learning\Matlab\P190\MGL1212MCS11.mat';
+if ispc %Choose path deliminator
+    delim = '\';
+else
+    delim = '/';
+end
+
+P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS11.mat';
 csv_location = 'Z:\CSV\Line_11\';
 line = 'Z:\DATA\Line_11';
 tapes = dir(line);
@@ -138,7 +143,7 @@ for i=(1:length(tapes))
        createCSV3_tape(path1,P190,csv_location)
     end
 end
-
+%{
 P190 = 'D:\Machine Learning\Matlab\P190\MGL1212NTMCS01.mat';
 csv_location = 'Z:\CSV\Line_AT\';
 line = 'Z:\DATA\Line_AT';
@@ -150,3 +155,5 @@ for i=(1:length(tapes))
        createCSV3_tape(path1,P190,csv_location)
     end
 end
+
+%}
