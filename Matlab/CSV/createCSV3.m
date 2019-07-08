@@ -1,13 +1,5 @@
 function createCSV3(dataFile,P190,csv_dir)
 %createCSV3('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','csvtest');
-%For more information see github.com/efreneau/machinelearninguw
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Note: In error, not all attributes have been flipped such that some
-%attributes are incorrectly ordered. As a work around flip all elements
-%such that 1 becomes 636 and 636 becomes 1 for
-%Line,Tape,File,Date,Time,Depth_at_Airgun(m),Depth_at_Reciever(m),X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1 and Z_R1.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     fs = 500;
     
@@ -146,7 +138,7 @@ function createCSV3(dataFile,P190,csv_dir)
                                'SPL_MLM_1,SPL_MLM_2,SPL_MLM_3,SPL_MLM_4,SPL_MLM_5,SPL_MLM_6,SPL_MLM_7,SPL_MLM_8,SPL_MLM_9,SPL_MLM_10,SPL_MLM_11,SPL_MLM_12,SPL_MLM_13,SPL_MLM_full,',...
                                'SEL_MLM_1,SEL_MLM_2,SEL_MLM_3,SEL_MLM_4,SEL_MLM_5,SEL_MLM_6,SEL_MLM_7,SEL_MLM_8,SEL_MLM_9,SEL_MLM_10,SEL_MLM_11,SEL_MLM_12,SEL_MLM_13,SEL_MLM_full\n'));
         for i = 1:recievernum %Append rows
-            fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(i)),',',string(Y_R1(i)),',',string(Z_R1(i)),',',string(peak(14,i))));
+            fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(recievernum-i+1)),',',string(Y_R1(recievernum-i+1)),',',string(Z_R1(recievernum-i+1)),',',string(peak(14,i))));
             for j=(1:13)
                 fprintf(fileID,strcat(',',string(peak(j,i))));
             end
