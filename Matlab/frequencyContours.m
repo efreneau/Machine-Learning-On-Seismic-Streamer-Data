@@ -1,26 +1,26 @@
 clear all; close all; clc;
 %Create 3 CSV
 %{
-P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212NTMCS01.mat';
-resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.csv';
+P190 = '..\P190\MGL1212NTMCS01.mat';
+resultFile = '..\example_shots\shallow.csv';
 dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%shallow
 createCSV3(dataFile,P190,resultFile);
 
-P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat';
-resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.csv';
+P190 = '..\P190\MGL1212MCS05.mat';
+resultFile = '..\example_shots\deep.csv';
 dataFile = 'Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW';%deep
 createCSV3(dataFile,P190,resultFile);
 
-P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS07.mat';
-resultFile = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.csv';
+P190 = '..\P190\MGL1212MCS07.mat';
+resultFile = '..\example_shots\mid.csv';
 dataFile = 'Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW';%mid
 createCSV3(dataFile,P190,resultFile);
 %}
 
 %load files
-[~,~,A] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.csv');
-[~,~,B] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.csv');
-[~,~,C] = xlsread('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.csv');
+[~,~,A] = xlsread('..\example_shots\shallow.csv');
+[~,~,B] = xlsread('..\example_shots\mid.csv');
+[~,~,C] = xlsread('..\example_shots\deep.csv');
 
 x = cell2mat(A(2:637,42:69));
 y = cell2mat(B(2:637,42:69));

@@ -1,17 +1,17 @@
 clear all; close all; clc;
-%createMAT('Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212NTMCS01.mat','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.mat')
-%createMAT('Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.mat')
-%createMAT('Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS07.mat','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.mat')
+%createMAT('Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW','..\P190\MGL1212NTMCS01.mat','..\example_shots\shallow.mat')
+%createMAT('Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW','..\P190\MGL1212MCS05.mat','..\example_shots\deep.mat')
+%createMAT('Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW','..\P190\MGL1212MCS07.mat','..\example_shots\mid.mat')
 
 start = 0.1;
 stop = 16;
 step = 0.5;
 
-load('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.mat');
+load('..\example_shots\shallow.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(shallow)');
-load('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\mid.mat');
+load('..\example_shots\mid.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(mid)');
-load('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.mat');
+load('..\example_shots\deep.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(deep)');
 
 function [t90,rms,sel] = sim(x,start,stop,step,descriptor)
