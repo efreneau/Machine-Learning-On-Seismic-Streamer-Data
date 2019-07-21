@@ -9,7 +9,6 @@
             catch er
                 rethrow(er)
                 %warning('Out of bounds shot number. File Ignored.');
-                %delete(location)
             end
         end
     end
