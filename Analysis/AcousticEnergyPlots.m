@@ -1,7 +1,7 @@
 clear all; close all; clc;
-[~,~,A] = xlsread('..\example_shots\shallow.csv');
-[~,~,B] = xlsread('..\example_shots\mid.csv');
-[~,~,C] = xlsread('..\example_shots\deep.csv');
+[~,~,A] = xlsread('..\Example_Shots\shallow.csv');
+[~,~,B] = xlsread('..\Example_Shots\mid.csv');
+[~,~,C] = xlsread('..\Example_Shots\deep.csv');
 
 %Replace outliers defined by s stds from the median in a window of w
 w = 20;

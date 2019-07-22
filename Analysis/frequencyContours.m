@@ -1,26 +1,26 @@
 clear all; close all; clc;
 %Create 3 CSV
 %{
-P190 = '..\P190\MGL1212NTMCS01.mat';
-resultFile = '..\example_shots\shallow.csv';
+P190 = '..\Navigation_P190\MGL1212NTMCS01.mat';
+resultFile = '..\Example_Shots\shallow.csv';
 dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%shallow
 createCSV(dataFile,P190,resultFile);
 
-P190 = '..\P190\MGL1212MCS05.mat';
-resultFile = '..\example_shots\deep.csv';
+P190 = '..\Navigation_P190\MGL1212MCS05.mat';
+resultFile = '..\Example_Shots\deep.csv';
 dataFile = 'Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW';%deep
 createCSV(dataFile,P190,resultFile);
 
-P190 = '..\P190\MGL1212MCS07.mat';
-resultFile = '..\example_shots\mid.csv';
+P190 = '..\Navigation_P190\MGL1212MCS07.mat';
+resultFile = '..\Example_Shots\mid.csv';
 dataFile = 'Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW';%mid
 createCSV(dataFile,P190,resultFile);
 %}
 
 %load files
-[~,~,A] = xlsread('..\example_shots\shallow.csv');
-[~,~,B] = xlsread('..\example_shots\mid.csv');
-[~,~,C] = xlsread('..\example_shots\deep.csv');
+[~,~,A] = xlsread('..\Example_Shots\shallow.csv');
+[~,~,B] = xlsread('..\Example_Shots\mid.csv');
+[~,~,C] = xlsread('..\Example_Shots\deep.csv');
 
 x = cell2mat(A(2:637,42:69));
 y = cell2mat(B(2:637,42:69));

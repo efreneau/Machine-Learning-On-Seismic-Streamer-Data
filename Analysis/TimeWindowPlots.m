@@ -7,11 +7,11 @@ start = 0.1;
 stop = 16;
 step = 0.5;
 
-load('..\example_shots\shallow.mat');
+load('..\Example_Shots\shallow.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(shallow)');
-load('..\example_shots\mid.mat');
+load('..\Example_Shots\mid.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(mid)');
-load('..\example_shots\deep.mat');
+load('..\Example_Shots\deep.mat');
 [t90,rms,sel] = sim(Data1,start,stop,step,'(deep)');
 
 function [t90,rms,sel] = sim(x,start,stop,step,descriptor)
