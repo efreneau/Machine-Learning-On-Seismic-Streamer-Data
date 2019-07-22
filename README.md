@@ -21,13 +21,13 @@ streamer*.
 
 **/Lists/:** Contains a list of all of the csv files and the list of files I determined to be bad from the crew's logs.
 
-**/Matlab/:** Matlab code usually having to do with figure generation.
+**/Analysis/:** Matlab code usually having to do with further processing and figure generation.
 
-**/Matlab/CSV/:** All code dealing with preprocessing and creating CSVs. This code relies on parallelization to save time. CSV1 contains RMS, SEL and T90 results. CSV2 contains MLMs.
+**/Preprocessing/:** All code dealing with preprocessing and creating CSVs. This code relies on parallelization to save time. CSV1 contains RMS, SEL and T90 results. CSV2 contains MLMs.
 
-**/P190/:** Processed navigation files in .mat format.
+**/Navigation_P190/:** Processed navigation files in .mat format.
 
-**/Relevent Papers/:** Reference.
+**/Relevant Papers/:** Reference.
 
 **/old/:** Old code kept in case the need arises.
 
