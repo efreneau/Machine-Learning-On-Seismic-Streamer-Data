@@ -98,7 +98,7 @@ model_compound(sel_deep,deep_range);
 function [a,b] = model_loglinear(target,range)%constrained optimization solution for [a,b] in target = a*log10(R)+b
     options = optimset('display','off');
     f = @(x) norm(x(1)*log10(range)+x(2)-target,2);
-    x = fmincon(f,[0,150],eye(2),[20,200],[],[],[],[],[],options);
+    x = fmincon(f,[0,150],eye(2),[20,300],[],[],[],[],[],options);
     a = x(1); b = x(2);
     disp(strcat(num2str(a),'*Log10(R)+',num2str(b)))
 end
@@ -106,7 +106,7 @@ end
 function [a,b,c] = model_compound(target,range)%constrained optimization solution for [a,b,c] in target = a*log10(R)+b*R+c
     options = optimset('display','off');
     f = @(x) norm(x(1)*log10(range)+x(2)*range+x(3)-target,2);
-    x = fmincon(f,[1,1,150],eye(3),[20,20,200],[],[],[],[],[],options);
+    x = fmincon(f,[1,5,150],eye(3),[20,20,300],[],[],[],[],[],options);
     a = x(1); b = x(2); c = x(3);
     disp(strcat(num2str(a),'*Log10(R)+',num2str(b),'*R+',num2str(c)))
 end
