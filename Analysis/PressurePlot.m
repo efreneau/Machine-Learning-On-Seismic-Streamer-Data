@@ -9,12 +9,12 @@ loc = {'..\Example_Shots\shallow.mat',...
 for it=(1:3)
     figure;
     load(loc{it});
-    c = 3e9;    %offset, tune this
+    c = 1e9;    %offset, tune this
     fs = 500;
     p = plot(1,1); 
     plt = [p p p p p p p p p p p p p];%blank array of plots
     offset = c*(0:12);%offset array
-
+    
     range = fliplr(sqrt(X_R1.^2+Y_R1.^2+Z_R1.^2));
 
     sos=[1,-2,1,1,-1.82570619168342,0.881881926844246;1,-2,1,1,-1.65627993129105,0.707242535896459;1,-2,1,1,-1.57205200320457,0.620422971870477];

@@ -26,14 +26,6 @@ shallow_range = flipud(shallow_range);
 mid_range = flipud(mid_range);
 deep_range = flipud(deep_range);
 
-%Compute log R
-log_shallow_range = log10(shallow_range);
-log_mid_range = log10(mid_range);
-log_deep_range = log10(deep_range);
-
-%MMSE fit of log R using a grid search
-%c_finder(rms_shallow,log_shallow_range)
-
 %Plots
 figure; hold on; grid on;%4c
 plot(shallow_range,sel_shallow,'r');
@@ -53,16 +45,65 @@ plot(deep_range,rms_deep,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('acoustic energy level in deep (dB)');
 
-function C = c_finder(target,base)%MMSE solution for C in target = C*base
-    grid = (-100:0.1:100);
-    MSE = zeros(1,size(grid,1));
+disp('Shallow RMS')
+ab_grid(rms_shallow,shallow_range);
+
+disp('Shallow SEL')
+[a,b] = ab_grid(sel_shallow,shallow_range);
+figure; hold on;
+scatter(shallow_range,sel_shallow,10,'filled','k');
+plot(shallow_range,a*log10(shallow_range)+b,'LineWidth',1,'Color','r');
+xlabel('Range (m)');
+ylabel('SEL (dB)');
+title('Shallow SEL');
+
+disp('Mid RMS')
+ab_grid(rms_mid,mid_range);
+
+disp('Mid SEL')
+[a,b] = ab_grid(sel_mid,mid_range);
+figure; hold on;
+scatter(mid_range,sel_mid,10,'filled','k');
+plot(mid_range,a*log10(mid_range)+b,'LineWidth',1,'Color','r');
+xlabel('Range (m)');
+ylabel('SEL (dB)');
+title('Mid SEL');
+
+disp('Deep RMS')
+ab_grid(rms_deep,deep_range);
+
+disp('Deep SEL')
+ab_grid(sel_deep,deep_range);
+figure; hold on;
+scatter(deep_range,sel_deep,10,'filled','k');
+plot(deep_range,a*log10(deep_range)+b,'LineWidth',1,'Color','r');
+xlabel('Range (m)');
+ylabel('SEL (dB)');
+title('Deep SEL');
+
+
+
+function [a,b] = ab_grid(target,range)%MMSE solution for C in target = a*log10(range)+b
+    base = log10(range);
+    grid = (-300:300);
+    MMSE = 99999;
+    i_min = 1; j_min = 1; 
     i = 1;
-    for c = grid
-        MSE(i) = mean((c*base-target).^2)
+    for x = grid
+        j = 1;
+        for y = grid
+            MSE = mean((x*base+y-target).^2);
+            if MSE<MMSE
+               MMSE = MSE;
+               i_min = i; j_min = j; 
+            end
+            j = j + 1;
+        end
         i = i + 1;
     end
-    [~,I] = min(MSE);
-    C = grid(I);
+    a = grid(i_min); 
+    b = grid(j_min);
+    disp(strcat(num2str(a),'*Log10(R)+',num2str(b)))
 end
 
 
