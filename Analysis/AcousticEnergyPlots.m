@@ -46,10 +46,10 @@ legend('SEL','SPL_rms','Interpreter','none');
 title('acoustic energy level in deep (dB)');
 
 disp('Shallow RMS')
-ab_grid(rms_shallow,shallow_range);
+model_loglinear(rms_shallow,shallow_range);
 
 disp('Shallow SEL')
-[a,b] = ab_grid(sel_shallow,shallow_range);
+[a,b] = model_loglinear(sel_shallow,shallow_range);
 figure; hold on;
 scatter(shallow_range,sel_shallow,10,'filled','k');
 plot(shallow_range,a*log10(shallow_range)+b,'LineWidth',1,'Color','r');
@@ -58,10 +58,10 @@ ylabel('SEL (dB)');
 title('Shallow SEL');
 
 disp('Mid RMS')
-ab_grid(rms_mid,mid_range);
+model_loglinear(rms_mid,mid_range);
 
 disp('Mid SEL')
-[a,b] = ab_grid(sel_mid,mid_range);
+[a,b] = model_loglinear(sel_mid,mid_range);
 figure; hold on;
 scatter(mid_range,sel_mid,10,'filled','k');
 plot(mid_range,a*log10(mid_range)+b,'LineWidth',1,'Color','r');
@@ -70,10 +70,10 @@ ylabel('SEL (dB)');
 title('Mid SEL');
 
 disp('Deep RMS')
-ab_grid(rms_deep,deep_range);
+model_loglinear(rms_deep,deep_range);
 
 disp('Deep SEL')
-ab_grid(sel_deep,deep_range);
+model_loglinear(sel_deep,deep_range);
 figure; hold on;
 scatter(deep_range,sel_deep,10,'filled','k');
 plot(deep_range,a*log10(deep_range)+b,'LineWidth',1,'Color','r');
@@ -81,32 +81,33 @@ xlabel('Range (m)');
 ylabel('SEL (dB)');
 title('Deep SEL');
 
+disp('===============')
+disp('Shallow RMS')
+model_compound(rms_shallow,shallow_range);
+disp('Shallow SEL')
+model_compound(sel_shallow,shallow_range);
+disp('Mid RMS')
+model_compound(rms_mid,mid_range);
+disp('Mid SEL')
+model_compound(sel_mid,mid_range);
+disp('Deep RMS')
+model_compound(rms_deep,deep_range);
+disp('Deep SEL')
+model_compound(sel_deep,deep_range);
 
-
-function [a,b] = ab_grid(target,range)%MMSE solution for C in target = a*log10(range)+b
-    base = log10(range);
-    grid = (-300:300);
-    MMSE = 99999;
-    i_min = 1; j_min = 1; 
-    i = 1;
-    for x = grid
-        j = 1;
-        for y = grid
-            MSE = mean((x*base+y-target).^2);
-            if MSE<MMSE
-               MMSE = MSE;
-               i_min = i; j_min = j; 
-            end
-            j = j + 1;
-        end
-        i = i + 1;
-    end
-    a = grid(i_min); 
-    b = grid(j_min);
+function [a,b] = model_loglinear(target,range)%constrained optimization solution for [a,b] in target = a*log10(R)+b
+    options = optimset('display','off');
+    f = @(x) norm(x(1)*log10(range)+x(2)-target,2);
+    x = fmincon(f,[0,150],eye(2),[20,200],[],[],[],[],[],options);
+    a = x(1); b = x(2);
     disp(strcat(num2str(a),'*Log10(R)+',num2str(b)))
 end
 
-
-
-
+function [a,b,c] = model_compound(target,range)%constrained optimization solution for [a,b,c] in target = a*log10(R)+b*R+c
+    options = optimset('display','off');
+    f = @(x) norm(x(1)*log10(range)+x(2)*range+x(3)-target,2);
+    x = fmincon(f,[1,1,150],eye(3),[20,20,200],[],[],[],[],[],options);
+    a = x(1); b = x(2); c = x(3);
+    disp(strcat(num2str(a),'*Log10(R)+',num2str(b),'*R+',num2str(c)))
+end
 
