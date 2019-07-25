@@ -43,19 +43,19 @@ figure; hold on; grid on;%4c
 plot(shallow_range,sel_shallow,'r');
 plot(shallow_range,rms_shallow,'k');
 legend('SEL','SPL_rms','Interpreter','none');
-title('acoustic energy level in shallow water (dB)');
+title('Acoustic Energy Level in Shallow Water (dB)');
 
 figure; hold on; grid on;%5c
 plot(mid_range,sel_mid,'r');
 plot(mid_range,rms_mid,'k');
 legend('SEL','SPL_rms','Interpreter','none');
-title('acoustic energy level in mid water (dB)');
+title('Acoustic Energy Level in Mid Water (dB)');
 
 figure; hold on; grid on;%6c
 plot(deep_range,sel_deep,'r');
 plot(deep_range,rms_deep,'k');
 legend('SEL','SPL_rms','Interpreter','none');
-title('acoustic energy level in deep (dB)');
+title('Acoustic Energy Level in Deep Water (dB)');
 
 disp('Shallow RMS')
 model_compound(rms_shallow,shallow_range);
