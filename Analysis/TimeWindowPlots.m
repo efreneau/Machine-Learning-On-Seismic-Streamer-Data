@@ -8,11 +8,21 @@ stop = 16;
 step = 0.5;
 
 load('..\Example_Shots\shallow.mat');
-[t90,rms,sel] = sim(Data1,start,stop,step,'(shallow)');
+[t90_shallow,rms_shallow,sel_shallow] = sim(Data1,start,stop,step,'(shallow)');
 load('..\Example_Shots\mid.mat');
-[t90,rms,sel] = sim(Data1,start,stop,step,'(mid)');
+[t90_mid,rms_mid,sel_mid] = sim(Data1,start,stop,step,'(mid)');
 load('..\Example_Shots\deep.mat');
-[t90,rms,sel] = sim(Data1,start,stop,step,'(deep)');
+[t90_deep,rms_deep,sel_deep] = sim(Data1,start,stop,step,'(deep)');
+
+figure; hold on; grid on;
+t = (start:step:stop);
+plot(t,sel_shallow,'LineStyle',':','Color','k','LineWidth',2)
+plot(t,sel_mid,'LineStyle','--','Color','k','LineWidth',2)
+plot(t,sel_deep,'LineStyle','-','Color','k','LineWidth',2)
+legend('Normalized SEL (Shallow)','Normalized SEL (Intermediate)','Normalized SEL (Deep)','Interpreter','none','Location','southeast');
+title('Effects of Window Size on SEL')
+xlabel('Window Length (s)')
+ylabel('Normalized SEL (dB)')
 
 function [t90,rms,sel] = sim(x,start,stop,step,descriptor)
     [~,rms_ref,sel_ref] = metrics2(x,1);%reference to 1 second
@@ -32,13 +42,13 @@ function [t90,rms,sel] = sim(x,start,stop,step,descriptor)
     plot(t,rms)
     plot(t,sel)
     legend('rms','sel');
-    title(strcat('effects of window size ',descriptor))
+    title(strcat('Effects of Window Size ',descriptor))
     xlabel('Window Length (s)')
     ylabel('Normalized Power Level (dB)')
     
     figure; grid on;
     plot(t,t90)
-    title(strcat('T90 over window size ',descriptor))
+    title(strcat('T90 Over Window Size ',descriptor))
     xlabel('Time Window (s)')
     ylabel('T90 (s)')
 end
