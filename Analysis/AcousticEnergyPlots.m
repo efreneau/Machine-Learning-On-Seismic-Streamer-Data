@@ -48,6 +48,7 @@ plot(shallow_range,sel_shallow,'r');
 plot(shallow_range,rms_shallow,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('Acoustic Energy Level in Shallow Water (dB)');
+ylim([150,195]);
 
 hgexport(gcf, '..\Figures\sel_rms_vs_range_(shallow).tiff', style);
 
@@ -56,6 +57,7 @@ plot(mid_range,sel_mid,'r');
 plot(mid_range,rms_mid,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('Acoustic Energy Level in Intermediate Water (dB)');
+ylim([150,195]);
 
 hgexport(gcf, '..\Figures\sel_rms_vs_range_(mid).tiff', style);
 
@@ -64,6 +66,7 @@ plot(deep_range,sel_deep,'r');
 plot(deep_range,rms_deep,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('Acoustic Energy Level in Deep Water (dB)');
+ylim([150,195]);
 
 hgexport(gcf, '..\Figures\sel_rms_vs_range_(deep).tiff', style);
 
@@ -78,6 +81,7 @@ plot(shallow_range,a*log10(shallow_range)+b*shallow_range+c,'LineWidth',1,'Color
 xlabel('Range (m)');
 ylabel('SEL (dB)');
 title('SEL vs Range (Shallow)');
+ylim([150,185]);
 
 hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(shallow).tiff', style);
 
@@ -92,6 +96,7 @@ plot(mid_range,a*log10(mid_range)+b*mid_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
 title('SEL vs Range (Intermediate)');
+ylim([150,185]);
 
 hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(mid).tiff', style);
 
@@ -106,6 +111,7 @@ plot(deep_range,a*log10(deep_range)+b*deep_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
 title('SEL vs Range (Deep)');
+ylim([150,185]);
 
 hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(deep).tiff', style);
 
