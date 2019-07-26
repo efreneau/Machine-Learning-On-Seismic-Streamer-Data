@@ -80,6 +80,7 @@ scatter(shallow_range,sel_shallow,10,'filled','k');
 plot(shallow_range,a*log10(shallow_range)+b*shallow_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
+legend('Expermental','Curve Fit');
 title('SEL vs Range (Shallow)');
 ylim([150,185]);
 
@@ -95,6 +96,7 @@ scatter(mid_range,sel_mid,10,'filled','k');
 plot(mid_range,a*log10(mid_range)+b*mid_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
+legend('Expermental','Curve Fit');
 title('SEL vs Range (Intermediate)');
 ylim([150,185]);
 
@@ -110,6 +112,7 @@ scatter(deep_range,sel_deep,10,'filled','k');
 plot(deep_range,a*log10(deep_range)+b*deep_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
+legend('Expermental','Curve Fit');
 title('SEL vs Range (Deep)');
 ylim([150,185]);
 
