@@ -1,10 +1,17 @@
 clear all; clc; close all;
 
+style=hgexport('readstyle','paper');
+style.Format = 'tiff';
+
 %readMCS(dataFile,P190,resultFile);
 
 loc = {'..\Example_Shots\shallow.mat',...
        '..\Example_Shots\mid.mat',...
        '..\Example_Shots\deep.mat'};
+
+figs = {'..\Figures\pressure_v_range_over_time_(shallow).tiff',...
+        '..\Figures\pressure_v_range_over_time_(mid).tiff',...
+        '..\Figures\pressure_v_range_over_time_(deep).tiff'};
 
 for it=(1:3)
     figure;
@@ -50,6 +57,8 @@ for it=(1:3)
 
     yticks(offset)%create ticks
     yticklabels(round(range(yt+d)))%label with channel numbers
+    
+    hgexport(gcf, figs{it}, style);
 end
 
 

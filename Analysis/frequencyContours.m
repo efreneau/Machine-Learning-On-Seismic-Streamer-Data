@@ -1,9 +1,14 @@
 clear all; close all; clc;
+
+style=hgexport('readstyle','paper');
+style.Format = 'tiff';
+
 %Create 3 CSV
 %{
 P190 = '..\Navigation_P190\MGL1212NTMCS01.mat';
 resultFile = '..\Example_Shots\shallow.csv';
-dataFile = 'Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW';%shallow
+dataFile =
+'Z:\DATA\Line_AT\TAPE0106.REEL\R000011_1342875702.RAW';%shallow
 createCSV(dataFile,P190,resultFile);
 
 P190 = '..\Navigation_P190\MGL1212MCS05.mat';
@@ -78,7 +83,7 @@ figure;
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('deep_sel', 'Interpreter', 'none');
+title('Frequency Contour (SEL, Deep)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
@@ -86,12 +91,14 @@ xticklabels(roundn(deep_range(xt),2));%compute ranges rounded to the hundred
 yticks((1:13));
 yticklabels(yt);%band center frequencies
 
+hgexport(gcf, '..\Figures\sel_freq_range_contour_(deep).tiff', style);
+
 figure;
 [C,h] = contourf(deep_rms,layers);
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('deep_rms', 'Interpreter', 'none');
+title('Frequency Contour (RMS, Deep)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
@@ -99,25 +106,29 @@ xticklabels(roundn(deep_range(xt),2));
 yticks((1:13));
 yticklabels(yt);
 
+hgexport(gcf, '..\Figures\rms_freq_range_contour_(deep).tiff', style);
+
 figure;
 [C,h] = contourf(mid_sel,layers);
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('mid_sel', 'Interpreter', 'none');
+title('Frequency Contour (SEL, Intermediate)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
 xticklabels(roundn(mid_range(xt),2));
 yticks((1:13));
 yticklabels(yt);
+
+hgexport(gcf, '..\Figures\sel_freq_range_contour_(mid).tiff', style);
 
 figure;
 [C,h] = contourf(mid_rms,layers);
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('mid_rms', 'Interpreter', 'none');
+title('Frequency Contour (RMS, Intermediate)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
@@ -125,25 +136,29 @@ xticklabels(roundn(mid_range(xt),2));
 yticks((1:13));
 yticklabels(yt);
 
+hgexport(gcf, '..\Figures\rms_freq_range_contour_(mid).tiff', style);
+
 figure;
 [C,h] = contourf(shallow_sel,layers);
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('shallow_sel', 'Interpreter', 'none');
+title('Frequency Contour (SEL, Shallow)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
 xticklabels(roundn(shallow_range(xt),2));
 yticks((1:13));
 yticklabels(yt);
+
+hgexport(gcf, '..\Figures\sel_freq_range_contour_(shallow).tiff', style);
 
 figure;
 [C,h] = contourf(shallow_rms,layers);
 set(h,'LineColor','none')
 cb = colorbar; 
 title(cb,'dB rel. \muPa');
-title('shallow_rms', 'Interpreter', 'none');
+title('Frequency Contour (RMS, Shallow)', 'Interpreter', 'none');
 xlabel('Range (m)');
 ylabel('Frequency (Hz)');
 xticks(xt);
@@ -151,4 +166,5 @@ xticklabels(roundn(shallow_range(xt),2));
 yticks((1:13));
 yticklabels(yt);
 
+hgexport(gcf, '..\Figures\rms_freq_range_contour_(shallow).tiff', style);
 

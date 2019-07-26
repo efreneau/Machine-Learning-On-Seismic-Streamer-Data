@@ -1,4 +1,8 @@
 clear all; close all; clc;
+
+style=hgexport('readstyle','paper');
+style.Format = 'tiff';
+ 
 [~,~,A] = xlsread('..\Example_Shots\shallow.csv');
 [~,~,B] = xlsread('..\Example_Shots\mid.csv');
 [~,~,C] = xlsread('..\Example_Shots\deep.csv');
@@ -45,17 +49,23 @@ plot(shallow_range,rms_shallow,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('Acoustic Energy Level in Shallow Water (dB)');
 
+hgexport(gcf, '..\Figures\sel_rms_vs_range_(shallow).tiff', style);
+
 figure; hold on; grid on;%5c
 plot(mid_range,sel_mid,'r');
 plot(mid_range,rms_mid,'k');
 legend('SEL','SPL_rms','Interpreter','none');
-title('Acoustic Energy Level in Mid Water (dB)');
+title('Acoustic Energy Level in Intermediate Water (dB)');
+
+hgexport(gcf, '..\Figures\sel_rms_vs_range_(mid).tiff', style);
 
 figure; hold on; grid on;%6c
 plot(deep_range,sel_deep,'r');
 plot(deep_range,rms_deep,'k');
 legend('SEL','SPL_rms','Interpreter','none');
 title('Acoustic Energy Level in Deep Water (dB)');
+
+hgexport(gcf, '..\Figures\sel_rms_vs_range_(deep).tiff', style);
 
 disp('Shallow RMS')
 model_compound(rms_shallow,shallow_range);
@@ -67,19 +77,23 @@ scatter(shallow_range,sel_shallow,10,'filled','k');
 plot(shallow_range,a*log10(shallow_range)+b*shallow_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
-title('Shallow SEL');
+title('SEL vs Range (Shallow)');
 
-disp('Mid RMS')
+hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(shallow).tiff', style);
+
+disp('Intermediate RMS')
 model_compound(rms_mid,mid_range);
 
-disp('Mid SEL')
+disp('Intermediate SEL')
 [a,b,c] = model_compound(sel_mid,mid_range);
 figure; hold on;
 scatter(mid_range,sel_mid,10,'filled','k');
 plot(mid_range,a*log10(mid_range)+b*mid_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
-title('Mid SEL');
+title('SEL vs Range (Intermediate)');
+
+hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(mid).tiff', style);
 
 disp('Deep RMS')
 model_compound(rms_deep,deep_range);
@@ -91,7 +105,9 @@ scatter(deep_range,sel_deep,10,'filled','k');
 plot(deep_range,a*log10(deep_range)+b*deep_range+c,'LineWidth',1,'Color','r');
 xlabel('Range (m)');
 ylabel('SEL (dB)');
-title('Deep SEL');
+title('SEL vs Range (Deep)');
+
+hgexport(gcf, '..\Figures\sel_vs_range_w_fit_(deep).tiff', style);
 
 function [a,b,c] = model_compound(target,range)%constrained optimization solution for [a,b,c] in target = a*log10(R)+b*R+c
     options = optimset('display','off');

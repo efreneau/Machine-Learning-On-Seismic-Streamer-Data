@@ -1,4 +1,8 @@
 clear all; close all; clc;
+
+style=hgexport('readstyle','paper');
+style.Format = 'tiff';
+
 %createMAT('Z:\DATA\Line_AT\TAPE0106.REEL\R000179_1342879566.RAW','..\P190\MGL1212NTMCS01.mat','..\example_shots\shallow.mat')
 %createMAT('Z:\DATA\Line_05\TAPE0028.REEL\R000028_1342408921.RAW','..\P190\MGL1212MCS05.mat','..\example_shots\deep.mat')
 %createMAT('Z:\DATA\Line_07\TAPE0048.REEL\R000319_1342512128.RAW','..\P190\MGL1212MCS07.mat','..\example_shots\mid.mat')
@@ -23,6 +27,8 @@ legend('Normalized SEL (Shallow)','Normalized SEL (Intermediate)','Normalized SE
 title('Effects of Window Size on SEL')
 xlabel('Window Length (s)')
 ylabel('Normalized SEL (dB)')
+
+hgexport(gcf, '..\Figures\normalized_sel_for_ranges_(mid).tiff', style);
 
 function [t90,rms,sel] = sim(x,start,stop,step,descriptor)
     [~,rms_ref,sel_ref] = metrics2(x,1);%reference to 1 second
