@@ -47,6 +47,8 @@ figure; hold on; grid on;%4c
 plot(shallow_range,sel_shallow,'r');
 plot(shallow_range,rms_shallow,'k');
 legend('SEL','SPL_rms','Interpreter','none');
+xlabel('Range (m)');
+ylabel('Acoustic Energy Level (dB)');
 title('Acoustic Energy Level in Shallow Water (dB)');
 ylim([150,195]);
 
@@ -56,6 +58,8 @@ figure; hold on; grid on;%5c
 plot(mid_range,sel_mid,'r');
 plot(mid_range,rms_mid,'k');
 legend('SEL','SPL_rms','Interpreter','none');
+xlabel('Range (m)');
+ylabel('Acoustic Energy Level (dB)');
 title('Acoustic Energy Level in Intermediate Water (dB)');
 ylim([150,195]);
 
@@ -65,6 +69,8 @@ figure; hold on; grid on;%6c
 plot(deep_range,sel_deep,'r');
 plot(deep_range,rms_deep,'k');
 legend('SEL','SPL_rms','Interpreter','none');
+xlabel('Range (m)');
+ylabel('Acoustic Energy Level (dB)');
 title('Acoustic Energy Level in Deep Water (dB)');
 ylim([150,195]);
 
