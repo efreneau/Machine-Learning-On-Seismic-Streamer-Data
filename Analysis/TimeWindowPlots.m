@@ -23,7 +23,7 @@ t = (start:step:stop);
 plot(t,sel_shallow,'LineStyle',':','Color','k','LineWidth',2)
 plot(t,sel_mid,'LineStyle','--','Color','k','LineWidth',2)
 plot(t,sel_deep,'LineStyle','-','Color','k','LineWidth',2)
-legend('Normalized SEL (Shallow)','Normalized SEL (Intermediate)','Normalized SEL (Deep)','Interpreter','none','Location','southeast');
+legend('Shallow Normalized SEL','Intermediate Normalized SEL','Deep Normalized SEL','Interpreter','none','Location','southeast');
 title('Effects of Window Size on SEL')
 xlabel('Window Length (s)')
 ylabel('Normalized SEL (dB)')
