@@ -1,5 +1,9 @@
 def loadDataSet(location, skiplist):
 	import pandas as pd
+	import numpy as np
+	import os
+	import mmap
+	
 	dataset = pd.DataFrame()
 	types_dict = {'Line':str,'Tape':str,'File':str,'Date':np.uint16,'Time':str,
 		'Depth_at_Airgun(m)':np.float32,'Depth_at_Reciever(m)':np.float32,
@@ -34,8 +38,20 @@ def loadDataSet(location, skiplist):
 	s = mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ)
     
 	for filename in sorted(files):
-		if s.find(str.encode(filename)) == -1:
-			dirname = csv_train_path + filename
-			with open(dirname) as csvFile:
-				dataset = dataset.append(pd.read_csv(location,sep=',',header=0,dtype=types_dict,skiprows=0),ignore_index = True)
+		name = str.encode(filename)
+		if s.find(name) == -1:
+			file_path = location + '/' + filename
+			shot = pd.read_csv(file_path,sep=',',header=0,dtype=types_dict,skiprows=0)
+			
+			oldx = shot['X_R1']###Flip workaround
+			oldy = shot['Y_R1']
+			oldz = shot['Z_R1']
+			
+			shot['X_R1'] = oldx.reindex(index=oldx.index[::-1])
+			shot['Y_R1'] = oldy.reindex(index=oldy.index[::-1])
+			shot['Z_R1'] = oldz.reindex(index=oldz.index[::-1])
+			
+			dataset = dataset.append(shot,ignore_index = True)
+		else:
+			print(name,': Skipped')
 	return dataset
