@@ -3,6 +3,8 @@ clear all; close all; clc;
 style=hgexport('readstyle','paper');
 style.Format = 'tiff';
 
+hgexport(gcf, figs{it}, style);
+
 %Create 3 CSV
 %{
 P190 = '..\Navigation_P190\MGL1212NTMCS01.mat';
