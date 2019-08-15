@@ -18,6 +18,8 @@ sel_contour('D:\CSV\Line_05\Line_05_TAPE0027.REEL_R000288_1342407077.csv','SEL(d
 sel_contour('D:\CSV\Line_05\Line_05_TAPE0032.REEL_R001163_1342434144.csv','SEL(deep4)');
 sel_contour('D:\CSV\Line_05\Line_05_TAPE0032.REEL_R001095_1342432634.csv','SEL(deep5)');
 
+sel_contour('D:\CSV\Line_05\Line_05_TAPE0029.REEL_R000430_1342417800.csv','SEL(line 5, file 430)');
+
 function sel_contour(loc,title1)
     [~,~,data] = xlsread(loc);
     vals = cell2mat(data(2:637,42:69));
