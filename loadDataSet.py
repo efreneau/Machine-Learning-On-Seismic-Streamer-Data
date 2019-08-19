@@ -42,14 +42,16 @@ def loadDataSet(location, skiplist):
 		if s.find(name) == -1:
 			file_path = location + '/' + filename
 			shot = pd.read_csv(file_path,sep=',',header=0,dtype=types_dict,skiprows=0)
+			shot.rename(columns={'Depth_at_Airgun(m)':'Depth_at_Airgun','Depth_at_Reciever(m)':'Depth_at_Reciever'}, inplace=True)#remove parens
+			shot[['X_R1','Y_R1','Z_R1']] = shot[['X_R1','Y_R1','Z_R1']].values[::-1] ###Flip workaround
 			
-			oldx = shot['X_R1']###Flip workaround
-			oldy = shot['Y_R1']
-			oldz = shot['Z_R1']
+			R = np.linalg.norm(shot[['X_R1','Y_R1']].values,axis=1)
+			shot['Range'] = R
+			shot['Log_Range'] = np.log10(R)
 			
-			shot['X_R1'] = oldx.reindex(index=oldx.index[::-1])
-			shot['Y_R1'] = oldy.reindex(index=oldy.index[::-1])
-			shot['Z_R1'] = oldz.reindex(index=oldz.index[::-1])
+			shot.loc[shot.Depth_at_Airgun >= 1000, 'Depth_Category'] = "Deep" #Depth bracket assignment
+			shot.loc[(shot.Depth_at_Airgun > 100) & (shot.Depth_at_Airgun < 1000), 'Depth_Category'] = "Intermediate"
+			shot.loc[shot.Depth_at_Airgun <= 100, 'Depth_Category'] = "Shallow" 
 			
 			dataset = dataset.append(shot,ignore_index = True)
 		else:
