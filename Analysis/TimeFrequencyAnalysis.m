@@ -1,10 +1,12 @@
+
 if (exist('Data1','var')) ~= 0
     close all;
 else
     clear all; clc; close all;
-    load("C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\tf_test.mat");
+    load("C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.mat");
 end
-%readMCS("C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\R000339_1342415803.RAW","C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1110MCS05.mat","C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\tf_test.mat");
+
+%readMCS("C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.RAW","C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1110MCS05.mat","C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\shallow.mat");
 
 %c = 2e2; %constant offset
 d = 1.0; %scaling factor to c
@@ -14,9 +16,9 @@ shot = "R000339";
 
 num_bands = 100; 
 num_ticks = 10; 
-element_num = 50;%636;
-BW = 5; 
-f_max = 210;
+element_num = 630;%636;
+f_max = 120;
+BW = 2;%f_max/num_bands;
 
 fs = 500;
 
@@ -70,3 +72,5 @@ f = f_max*(1:num_bands)/num_bands;
 ticks_f = linspace(f(1),f(end),num_ticks);
 xticklabels(ticks_f);%label with frequency
 
+ylim([0,size(t,2)/fs])
+%ylim([11,12])
