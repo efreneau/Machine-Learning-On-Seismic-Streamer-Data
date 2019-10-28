@@ -7,6 +7,8 @@ clear all; close all; clc;
 loc = {'..\example_shots\shallow.mat',...
        '..\example_shots\mid.mat',...
        '..\example_shots\deep.mat'};
+titles1 = {'Acoustic Pressure Time Series (shallow)','Acoustic Pressure Time Series (intermediate)','Acoustic Pressure Time Series (deep)'};
+titles2 = {'Amplitude Spectrum (shallow) [dB rel 1\muPa/Hz]','Amplitude Spectrum (intermediate) [dB rel 1\muPa/Hz]','Amplitude Spectrum (deep) [dB rel 1\muPa/Hz]'};
 
 for it=(1:3)
     figure;
@@ -22,7 +24,7 @@ for it=(1:3)
     plot(t,p_t,'Color','k');
     grid on;
     hold on;
-    title('Acoustic Pressure Time Series');
+    title(titles1{it});
     xlabel('Time (Seconds)')
     ylabel('Acoustic Pressure (Pa)')
     
@@ -37,7 +39,7 @@ for it=(1:3)
     P1 = 10*log10(1e6*P1);%convert to db rel uPa
     
     plot(f,P1,'Color','k') 
-    title('Amplitude Spectrum (dB rel 1\muPa/Hz)')
+    title(titles2{it})
     xlabel('Frequency (Hz)')
     ylabel('Amplitude (dB rel 1\muPa/Hz)')
     
