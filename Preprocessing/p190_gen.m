@@ -1,5 +1,5 @@
 clear all;
-
+%{
 nav = readP190('..\..\P190\MGL1110MCS02.p190')
 save('..\..\P190\MGL1110MCS02.mat')
 
@@ -18,6 +18,10 @@ save('..\..\P190\MGL1110MCS06.mat')
 
 nav = readP190('..\..\P190\MGL1110MCS07.p190')
 save('..\..\P190\MGL1110MCS07.mat')
+%}
+
+nav = readP190('C:\Users\zomege\Desktop\MGDS_Download\MGL1110MCS02.p190')
+save('..\..\P190\MGL1110MCS02.mat')
 
 function struct2vars(s)
 %STRUCT2VARS Extract values from struct fields to workspace variables
