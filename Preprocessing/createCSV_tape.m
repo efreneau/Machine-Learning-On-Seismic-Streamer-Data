@@ -7,8 +7,8 @@
             try
                 createCSV(location,P190,csv_location);
             catch er
-                rethrow(er)
-                %warning('Out of bounds shot number. File Ignored.');
+                %rethrow(er)
+                warning('Out of bounds shot number. File Ignored.');
             end
         end
     end
