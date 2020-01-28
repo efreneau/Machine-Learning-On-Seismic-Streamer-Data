@@ -1,4 +1,4 @@
-function createCSV(dataFile,P190,csv_dir)
+function createCSV(dataFile,P190,csv_dir,reverb_window)
 %createCSV('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','csvtest');
     
     fs = 500;
@@ -182,8 +182,8 @@ function [SEL,SPL] = MLM(energy, peak)
     SPi_bar = filter(b,1,SPi);
     SELi = 10*log10(SEi_bar);
     SPLi = 20*log10(SPi_bar);
-    SEL = min(SELi(peak:peak+9*fs));%Look for minimum up to 9s away from peak
-    SPL = min(SPLi(peak:peak+9*fs));
+    SEL = min(SELi(peak:peak+reverb_window*fs));%Look for minimum up to 9s away from peak
+    SPL = min(SPLi(peak:peak+reverb_window*fs));%reverb_window used instead of 9s for certain longer shots
 end
 
 function [t90,rms,sel] = metrics(e,peak)
