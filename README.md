@@ -18,7 +18,7 @@ streamer*.
 ### Files and Folders ###
 **/:** Files in the root directory are current work, important results and figures.
 
-**/Lists/:** Contains a list of all of the csv files and the list of files I determined to be bad from the crew's logs.
+**/Lists/:** Contains a list of all of the csv files and the list of files I determined to be bad from the crew's logs. CURRENTLY: only exists for MGL1212.
 
 **/Analysis/:** Matlab code usually having to do with further processing and figure generation.
 
@@ -45,8 +45,12 @@ streamer**([here](https://github.com/efreneau/machinelearninguw/blob/master/Rele
 **Quantifying seismic survey reverberation off the Alaskan North Slope**([here](https://github.com/efreneau/Machine-Learning-On-Seismic-Streamer-Data/blob/master/Relevant%20Papers/Guerra_Thode_et%20al_2011_read.pdf)): Process to compute MLMs discussed here.
 
 ### Publications ###
-We submited our resulting models for non-frequency dependent RMS and SEL. We are going to publish in The Journal of the Acoustical Society of America and are waiting for the revision period.
 
-We submitted an abstract and were accepted to present at IEEE OCEANS, in Seattle and will attend in October.
+Resulting models for non-frequency dependent RMS and SEL:
+
+Abadi, S. H., & Freneau, E. (2019). Short-range propagation characteristics of airgun pulses during marine seismic reflection surveys.
+The Journal of the Acoustical Society of America, 146(4), 2430–2442. https://doi.org/10.1121/1.5127843.
+
+We presented results at IEEE OCEANS 2019, in Seattle.
 
 We are currently working on models for the MLMs, which quantifies reverberations and will publish in a future paper.
