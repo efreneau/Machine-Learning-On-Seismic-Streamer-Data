@@ -43,24 +43,65 @@ function createCSV_no_MLM(dataFile,P190,csv_dir)
     fData = sosfilt(sos,f1,2);%filter
      
     recievernum = size(fData,1);
-    RMS = zeros(recievernum);
-    SEL = zeros(recievernum);
+    SEL = zeros(14,recievernum);%SEL(band,r)
     
-    st = 10*log10(size(fData,2)/fs);%Window size effect in SEL calculation
-    
-    parfor r=1:recievernum%Find RMS and SEL
-        energy = fData(r,:).^2;
-        RMS(r) = 10*log10(mean(energy));
-        SEL(r) = RMS(r) + st;     
-    end 
+    parfor r=1:recievernum%Find SEL over the whole time window
+        for band = 1:14%for each frequency band
+            switch band% 1/3-octave bands
+                case 1% 11.2-14.1 Hz
+                    mag = bandpass(fData(r,:),[11.2, 14.1],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 2% 14.1-17.8 Hz
+                    mag = bandpass(fData(r,:),[14.1, 17.8],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 3% 17.8-22.4 Hz
+                    mag = bandpass(fData(r,:),[17.8, 22.4],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 4% 22.4-28.2 Hz
+                    mag = bandpass(fData(r,:),[22.4, 28.2],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 5% 28.2-35.5 Hz
+                    mag = bandpass(fData(r,:),[28.2, 35.5],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 6% 35.5-44.7 Hz
+                    mag = bandpass(fData(r,:),[35.5, 44.7],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 7% 44.7-56.2 Hz
+                    mag = bandpass(fData(r,:),[44.7, 56.2],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 8% 56.2-70.8 Hz
+                    mag = bandpass(fData(r,:),[56.2, 70.8],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 9% 70.8-89.1 Hz
+                    mag = bandpass(fData(r,:),[70.8, 89.1],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 10% 89.1-112 Hz
+                    mag = bandpass(fData(r,:),[89.1, 112],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 11% 112-141 Hz
+                    mag = bandpass(fData(r,:),[112, 141],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 12% 141-178 Hz
+                    mag = bandpass(fData(r,:),[141, 178],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 13% 178-224 Hz
+                    mag = bandpass(fData(r,:),[178, 224],fs);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+                case 14%full: full band
+                    mag = fData(r,:);
+                    SEL(band,r) = 10*log10(dot(mag,mag));
+            end
+        end
+    end
     try
         fileID = fopen(csv_file,'w');
         fprintf(fileID,strcat('Line,Tape,File,Date,Time,Depth_at_Airgun(m),Depth_at_Reciever(m),X_Airgun,Y_Airgun,Z_Airgun,X_R1,Y_R1,Z_R1,',...%column names
-                               'RMS,SEL\n'));
+                               'SEL_1,SEL_2,SEL_3,SEL_4,SEL_5,SEL_6,SEL_7,SEL_8,SEL_9,SEL_10,SEL_11,SEL_12,SEL_13,SEL_full\n'));
         for i = 1:recievernum %Append rows
             fprintf(fileID,strcat(string(linename),',',string(tapename),',',string(filename),',',string(JulianDay),',',string(Time),',',string(Depth),',',string(receiver_depth(i)),',',string(X_Airgun),',',string(Y_Airgun),',',string(Z_Airgun),',',string(X_R1(recievernum-i+1)),',',string(Y_R1(recievernum-i+1)),',',string(Z_R1(recievernum-i+1))));
-            fprintf(fileID,strcat(',',string(RMS(i))));
-            fprintf(fileID,strcat(',',string(SEL(i))));
+            for j=(1:14)
+                fprintf(fileID,strcat(',',string(SEL(j,i))));
+            end
             fprintf(fileID,'\n');
         end 
         fclose(fileID);

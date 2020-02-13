@@ -4,7 +4,22 @@ else
     delim = '/';
 end
 
+createCSV_no_MLM('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\Cascadia\MGL1212MCS05.mat','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\example_shots\deep_no_MLM.csv');
+
 %{
+P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\Cascadia\MGL1212MCS05.mat';
+csv_location = 'C:\Users\zomege\Documents\Csv\Line_05_no_MLM\';
+line = 'E:\Cascadia\Line_05\';
+
+tapes = dir(line);
+for i=(1:length(tapes))
+    name = tapes(i).name;
+    if(startsWith(name,'Tape','IgnoreCase',true))
+       path1 = strcat(line,delim,name,delim);
+       createCSV_tape_no_MLM(path1,P190,csv_location)
+    end
+end
+
 P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\Cascadia\MGL1212MCS01.mat';
 csv_location = 'C:\Users\zomege\Documents\Csv\Line_01_no_MLM\';
 line = 'E:\Cascadia\Line_01\';
@@ -20,7 +35,7 @@ end
 
 rmdir('C:\Users\zomege\Documents\Csv\Line_01_no_MLM\MatlabData','s')
 
-%}
+
 
 P190 = 'C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\Cascadia\MGL1212MCS02.mat';
 csv_location = 'C:\Users\zomege\Documents\Csv\Line_02_no_MLM\';
@@ -171,3 +186,4 @@ for i=(1:length(tapes))
 end
 
 rmdir('C:\Users\zomege\Documents\Csv\Line_AT_no_MLM\MatlabData','s')
+%}
