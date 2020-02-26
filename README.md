@@ -46,11 +46,7 @@ streamer**([here](https://github.com/efreneau/machinelearninguw/blob/master/Rele
 
 ### Publications ###
 
-Resulting models for non-frequency dependent RMS and SEL:
-
 Abadi, S. H., & Freneau, E. (2019). Short-range propagation characteristics of airgun pulses during marine seismic reflection surveys.
 The Journal of the Acoustical Society of America, 146(4), 2430–2442. https://doi.org/10.1121/1.5127843.
 
-We presented results at IEEE OCEANS 2019, in Seattle.
-
-We are currently working on models for the MLMs, which quantifies reverberations and will publish in a future paper.
+S. Abadi and E. Freneau, "Spectral Analysis of Airgun Pulses During Marine Seismic Reflection Surveys," OCEANS 2019 MTS/IEEE SEATTLE, Seattle, WA, USA, 2019, pp. 1-5. doi: 10.23919/OCEANS40490.2019.8962817.
