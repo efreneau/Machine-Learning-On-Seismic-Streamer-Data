@@ -1,4 +1,10 @@
 function createCSV_tape(path1,P190,csv_location,reverb_window)
+    if ispc %Choose path deliminator
+        delim = '\';
+    else
+        delim = '/';
+    end
+    
     files = dir(path1);
     parfor i = (1:length(files))
         file = files(i).name;
@@ -8,8 +14,9 @@ function createCSV_tape(path1,P190,csv_location,reverb_window)
                 createCSV(location,P190,csv_location,reverb_window);
             catch er
                 %rethrow(er)
-                warning('Out of bounds shot number. File Ignored.');
+                warning("It's likely that there is an out of bound shot number. File Ignored.");
             end
         end
     end
+    %rmdir(strcat(csv_location,delim,'MatlabData'),'s'); %clean up mat files
 end
