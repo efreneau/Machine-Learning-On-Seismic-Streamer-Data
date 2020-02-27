@@ -1,4 +1,4 @@
-function targz_handler(line_dir,csv_location,P190,line_name)
+function process_line(line_dir,csv_location,P190,line_name,reverb_window)
     if ispc %Choose path deliminator
         delim = '\';
     else
@@ -22,7 +22,7 @@ function targz_handler(line_dir,csv_location,P190,line_name)
                 name = tapes(i).name;
                 if(startsWith(name,'Tape','IgnoreCase',true))
                    path1 = strcat(temp,delim,name,delim);
-                   createCSV_tape_no_MLM(path1,P190,csv_location)
+                   createCSV_tape(path1,P190,csv_location,reverb_window)
                 end
             end
             
