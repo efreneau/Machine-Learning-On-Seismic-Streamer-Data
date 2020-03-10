@@ -1,4 +1,4 @@
-function createCSV_tape(path1,P190,csv_location,reverb_window)
+function process_tape(path1,P190,csv_location,reverb_window)
     if ispc %Choose path deliminator
         delim = '\';
     else
@@ -11,7 +11,7 @@ function createCSV_tape(path1,P190,csv_location,reverb_window)
         if(endsWith(file,'raw','IgnoreCase',true) && strcmp(file,'EOT.RAW')==0)
             location = strcat(path1,file);
             try
-                createCSV(location,P190,csv_location,reverb_window);
+                process_shot(location,P190,csv_location,reverb_window);
             catch er
                 rethrow(er)
                 %warning("It's likely that there is an out of bound shot number. File Ignored.");
