@@ -1,4 +1,4 @@
-function createCSV(dataFile,P190,csv_dir,reverb_window)
+function process_shot(dataFile,P190,csv_dir,reverb_window,sel_window)
 %createCSV('Z:\DATA\Line_05\TAPE0026.REEL\R000081_1342402331.RAW','C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\P190\MGL1212MCS05.mat','csvtest',9);
     
     fs = 500;
@@ -58,73 +58,73 @@ function createCSV(dataFile,P190,csv_dir,reverb_window)
                 case 1% 11.2-14.1 Hz
                     energy = bandpass(fData(r,:),[11.2, 14.1],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);%this makes sure that MLM's can use a consistant forward window 
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 2% 14.1-17.8 Hz
                     energy = bandpass(fData(r,:),[14.1, 17.8],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 3% 17.8-22.4 Hz
                     energy = bandpass(fData(r,:),[17.8, 22.4],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 4% 22.4-28.2 Hz
                     energy = bandpass(fData(r,:),[22.4, 28.2],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 5% 28.2-35.5 Hz
                     energy = bandpass(fData(r,:),[28.2, 35.5],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 6% 35.5-44.7 Hz
                     energy = bandpass(fData(r,:),[35.5, 44.7],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 7% 44.7-56.2 Hz
                     energy = bandpass(fData(r,:),[44.7, 56.2],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 8% 56.2-70.8 Hz
                     energy = bandpass(fData(r,:),[56.2, 70.8],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 9% 70.8-89.1 Hz
                     energy = bandpass(fData(r,:),[70.8, 89.1],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 10% 89.1-112 Hz
                     energy = bandpass(fData(r,:),[89.1, 112],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 11% 112-141 Hz
                     energy = bandpass(fData(r,:),[112, 141],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 12% 141-178 Hz
                     energy = bandpass(fData(r,:),[141, 178],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 13% 178-224 Hz
                     energy = bandpass(fData(r,:),[178, 224],fs).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
                 case 14%full: full band
                     energy = fData(r,:).^2;
                     [~,peak(band,r)] = max(energy(1:7*fs),[],2);%no filtering
-                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r));
-                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r));
+                    [T90(band,r),RMS(band,r),SEL(band,r)] = metrics(energy,peak(band,r),sel_window);
+                    [SEL_MLM(band,r),SPL(band,r)] = MLM(energy, peak(band,r),reverb_window);
             end
         end
     end 
@@ -168,7 +168,7 @@ function createCSV(dataFile,P190,csv_dir,reverb_window)
     end
 end
 
-function [SEL,SPL] = MLM(energy, peak)
+function [SEL,SPL] = MLM(energy, peak,reverb_window)
 %returns minimum SPL and SEL given the FFT of pressure and a band
     fs = 500;
     N = size(energy,2);
@@ -186,17 +186,17 @@ function [SEL,SPL] = MLM(energy, peak)
     SPL = min(SPLi(peak:peak+reverb_window*fs));%reverb_window used instead of 9s for certain longer shots
 end
 
-function [t90,rms,sel] = metrics(e,peak)
+function [t90,rms,sel] = metrics(e,peak,sel_window)
     fs = 500;
-    if peak <= 2*fs %Region 1: Peak is too close to the first index
-        e_windowed = [zeros(1,4*fs + 1 - (peak+2*fs)),e(1:peak+2*fs)];
-    elseif peak > 2*fs && length(e) - peak>=2*fs %Region 2: Peak has space on either side
-        e_windowed = e(peak-2*fs:peak+2*fs);
+    if peak <= (sel_window/2)*fs %Region 1: Peak is too close to the first index
+        e_windowed = [zeros(1,sel_window*fs + 1 - (peak+(sel_window/2)*fs)),e(1:peak+(sel_window/2)*fs)];
+    elseif peak > (sel_window/2)*fs && length(e) - peak>=(sel_window/2)*fs %Region 2: Peak has space on either side
+        e_windowed = e(peak-(sel_window/2)*fs:peak+(sel_window/2)*fs);
     else %Region 3: Peak is too close to the end
-        e_windowed = [e(peak-2*fs:end), zeros(1,2*fs - (size(e,2)-peak))];
+        e_windowed = [e(peak-(sel_window/2)*fs:end), zeros(1,(sel_window/2)*fs - (size(e,2)-peak))];
     end
     t90 = comp_t90(e_windowed);
-    rms = 10*log10(sum(e_windowed)/(2*fs*t90));
+    rms = 10*log10(sum(e_windowed)/((sel_window/2)*fs*t90));
     sel = rms+10*log10(t90);
     
     function tnin = comp_t90(x)%t90 calculation for a arbitrary window, takes energy as input

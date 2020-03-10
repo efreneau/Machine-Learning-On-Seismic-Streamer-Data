@@ -1,4 +1,4 @@
-function process_line(line_dir,csv_location,P190,line_name,reverb_window)
+function process_line(line_dir,csv_location,P190,line_name,reverb_window,sel_window)
     if ispc %Choose path deliminator
         delim = '\';
     else
@@ -22,7 +22,7 @@ function process_line(line_dir,csv_location,P190,line_name,reverb_window)
                 name = tapes(i).name;
                 if(startsWith(name,'Tape','IgnoreCase',true))
                    path1 = strcat(temp,delim,name,delim);
-                   process_tape(path1,P190,csv_location,reverb_window)
+                   process_tape(path1,P190,csv_location,reverb_window,sel_window)
                 end
             end
             

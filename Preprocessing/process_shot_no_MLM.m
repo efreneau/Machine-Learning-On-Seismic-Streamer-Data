@@ -1,4 +1,4 @@
-function createCSV_no_MLM(dataFile,P190,csv_dir)    
+function process_shot_no_MLM(dataFile,P190,csv_dir)    
     fs = 500;
     
     if ispc %Choose path deliminator
