@@ -1,36 +1,19 @@
 clear all;
-%{
-nav = readP190('..\..\P190\MGL1110MCS02.p190')
-save('..\..\P190\MGL1110MCS02.mat')
 
+process_p190('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1110\')
 
-nav = readP190('..\..\P190\MGL1110MCS03.p190')
-save('..\..\P190\MGL1110MCS03.mat')
-
-nav = readP190('..\..\P190\MGL1110MCS04.p190')
-save('..\..\P190\MGL1110MCS04.mat')
-
-nav = readP190('..\..\P190\MGL1110MCS05.p190')
-save('..\..\P190\MGL1110MCS05.mat')
-
-nav = readP190('..\..\P190\MGL1110MCS06.p190')
-save('..\..\P190\MGL1110MCS06.mat')
-
-nav = readP190('..\..\P190\MGL1110MCS07.p190')
-save('..\..\P190\MGL1110MCS07.mat')
-%}
-
-nav = readP190('C:\Users\zomege\Desktop\MGDS_Download\MGL1212\MGL1212MCS09A.p190')
-save('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1212MCS09A.mat')
-clear all;
-
-nav = readP190('C:\Users\zomege\Desktop\MGDS_Download\MGL1212\MGL1212MCS09B.p190')
-save('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1212MCS09B.mat')
-clear all;
-
-nav = readP190('C:\Users\zomege\Desktop\MGDS_Download\MGL1212\MGL1212MCS09C.p190')
-save('C:\Users\zomege\Documents\GitHub\Machine-Learning-On-Seismic-Streamer-Data\Navigation_P190\MGL1212MCS09C.mat')
-clear all;
+function process_p190(path)
+    files = dir(path);
+    for i = (1:length(files))
+        file = files(i).name;
+        if(endsWith(file,'p190','IgnoreCase',true))
+            location = strcat(path,file);
+            new_location = append(location(1:end-4),'mat');%remember to tweak number
+            nav = readP190(location)
+            save(new_location)
+        end
+    end
+end
 
 function struct2vars(s)
 %STRUCT2VARS Extract values from struct fields to workspace variables
