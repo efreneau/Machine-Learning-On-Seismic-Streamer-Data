@@ -107,7 +107,7 @@ function process_shot_no_MLM(dataFile,P190,csv_dir)
         fclose(fileID);
     catch er
         fclose(fileID);
-        del csv_file;
+        delete(sprintf('%s',csv_file))
         disp(['ID: ' ME.identifier])
         rethrow(er);
     end
