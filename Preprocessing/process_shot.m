@@ -163,8 +163,8 @@ function process_shot(dataFile,P190,csv_dir,reverb_window,sel_window)
     catch er
         fclose(fileID);
         delete(sprintf('%s',csv_file))
-        disp(['ID: ' ME.identifier])
-        rethrow(er);
+        %disp(['ID: ' ME.identifier])
+        %rethrow(er);
     end
 end
 
