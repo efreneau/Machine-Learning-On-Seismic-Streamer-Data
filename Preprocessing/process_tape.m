@@ -13,8 +13,8 @@ function process_tape(path1,P190,csv_location,reverb_window,sel_window)
             try
                 process_shot(location,P190,csv_location,reverb_window,sel_window);
             catch er
-                rethrow(er)
-                %warning("It's likely that there is an out of bound shot number. File Ignored.");
+                %rethrow(er)
+                warning("It's likely that there is an out of bound shot number. File Ignored.");
             end
         end
     end
