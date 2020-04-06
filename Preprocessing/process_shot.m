@@ -34,7 +34,7 @@ function process_shot(dataFile,P190,csv_dir,reverb_window,sel_window)
     end
     
     resultFile = strcat(result_dir,delim,result);
-    disp(dataFile)
+    disp(strcat('[',string(datetime('now')),']  t',linename,'\',tapename,'\',filename))%%%
     readMCS(dataFile,P190,resultFile);
     load(resultFile);
     f1 = Data1'*1e6;%pascal to micropascal
